@@ -1,0 +1,31 @@
+# PyCharm folder
+.idea
+Reduction_pipeline/observations/
+Reduction_pipeline/pyraf/
+
+# Comipled code
+*.pyc
+
+# Datasets
+*.csv
+*.fits
+*.vot
+*.dat
+*.txt
+*.h5
+*.hdf5
+*.json
+
+# Documents
+*.pdf
+*.odt
+
+# Dump or log data
+*.pkl
+*.out
+
+# Images
+*.jpg
+*.png
+*.bmp
+
