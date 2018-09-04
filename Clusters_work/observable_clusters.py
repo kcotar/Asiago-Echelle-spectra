@@ -11,7 +11,7 @@ c_data = Table.read('/home/klemen/data4_mount/clusters/Kharchenko_2013/catalog.c
 site = 'Mt. Ekar 182 cm. Telescope'
 
 # requested day
-day = 1
+day = 28
 month = 8
 year = 2018
 time_day_start = Time('{:04.0f}-{:02.0f}-{:02.0f} 12:00:00'.format(year, month, day), scale='utc')  # begin the same day
@@ -19,8 +19,8 @@ time_day_end = Time('{:04.0f}-{:02.0f}-{:02.0f} 12:00:00'.format(year, month, da
 
 prefix = '{:04.0f}_{:02.0f}_{:02.0f}_'.format(year, month, day)
 
-out_file = 'visibility_table.txt'
-our_file_2 = 'observable_clusters.txt'
+out_file = prefix+'visibility_table.txt'
+our_file_2 = prefix+'observable_clusters.txt'
 
 ekar_site = Observer.at_site(site, timezone="UTC")
 ekar_location = coord.EarthLocation.of_site(site)
@@ -59,9 +59,10 @@ txt_visibi.write('Cluster visibility and altitude in brackets at given UT times.
 txt_visibi.write('Night between '+obs_start.utc.iso+' and '+obs_end.utc.iso+' UTC (civil twilight)\n')
 txt_visibi.write('=============================================================================\n\n\n')
 
-use_cluster_from = ['NGC', 'IC', 'ASCC']
+use_cluster_from = ['NGC', 'IC', 'ASCC', 'Melotte']
 
 all_observable = list([])
+all_interesting_clusters = list([])
 for cluster in c_data:
     print cluster['Cluster']
 
@@ -73,7 +74,9 @@ for cluster in c_data:
     if n_ok == 0:
         continue
 
-    if cluster['d'] > 1300:
+    all_interesting_clusters.append(cluster['Cluster'])
+
+    if cluster['d'] > 1000:
         continue
 
     observable_flag = list([])
@@ -99,6 +102,7 @@ for cluster in c_data:
         print obs_time_alt_str
         txt_visibi.write(obs_time_alt_str+'\n\n')
 
-txt_clusters.write('All: \n"' + '","'.join(all_observable)+'"\n')
+txt_clusters.write('All: \n"' + '","'.join(all_observable)+'"\n\n')
+txt_clusters.write('All interesting: \n"' + '","'.join(all_interesting_clusters)+'"\n\n')
 txt_clusters.close()
 txt_visibi.close()
