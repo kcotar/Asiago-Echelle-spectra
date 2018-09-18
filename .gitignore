@@ -2,6 +2,7 @@
 .idea
 Reduction_pipeline/observations/
 Reduction_pipeline/pyraf/
+Reduction_pipeline/uparm/
 
 # Comipled code
 *.pyc
@@ -15,6 +16,13 @@ Reduction_pipeline/pyraf/
 *.h5
 *.hdf5
 *.json
+
+# Spectra and reference data
+*.ec
+*.par
+*.cl
+*.DAT
+logfile
 
 # Documents
 *.pdf

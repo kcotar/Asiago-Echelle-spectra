@@ -4,6 +4,8 @@ from sklearn.externals import joblib
 from glob import glob
 from astropy.io import fits
 from astropy.table import Table, join
+from copy import deepcopy
+import os
 
 import imp
 imp.load_source('helper_functions', '../../Carbon-Spectra/helper_functions.py')
@@ -11,29 +13,44 @@ from helper_functions import spectra_normalize
 imp.load_source('spectra_collection_functions', '../../Carbon-Spectra/spectra_collection_functions.py')
 from spectra_collection_functions import read_pkl_spectra, CollectionParameters
 
-galah_data_dir = '/home/klemen/data4_mount/'
 
-# R20000 synthetic reference spectra
-# ref_dir = '/home/gregor/public_html/Astro_predmeti/normalized_spectra_R20000/'
-# res_list = glob(ref_dir+'*/T*M05*V000K2SNWNVR20N.ASC')
-# w_a = np.loadtxt(ref_dir+'LAMBDA_R20.DAT')
-# ref_wvl_orig = np.loadtxt(ref_dir + 'LAMBDA_R20.DAT')
+def get_linelist_mask(wvl_values_in, d_wvl=0., element=None):
+    idx_lines_mask = wvl_values_in < 0.
+
+    if element is None:
+        galah_linelist_use = deepcopy(galah_linelist)
+    else:
+        galah_linelist_use = galah_linelist[galah_linelist['Element'] == element]
+
+    for line in galah_linelist_use:
+        idx_lines_mask[np.logical_and(wvl_values_in >= line['line_start'] - d_wvl, wvl_values_in <= line['line_end'] + d_wvl)] = True
+
+    return idx_lines_mask
+
+
+galah_data_dir = '/data4/cotar/'
+asiago_data_dir = galah_data_dir+'Asiago_reduced_data/'
 
 ref_cannon = Table.read(galah_data_dir+'sobject_iraf_53_reduced_20180327.fits')['sobject_id', 'galah_id', 'ra', 'dec']
 ref_cannon = join(ref_cannon, Table.read(galah_data_dir+'sobject_iraf_iDR2_180325_cannon.fits'), keys='sobject_id', join_type='left')
+galah_linelist = Table.read(galah_data_dir + 'GALAH_Cannon_linelist_newer.csv')
 
+abundances = [c for c in ref_cannon.colnames if '_abund_' in c and len(c.split('_')) == 3]
+elements = [ab.split('_')[0] for ab in abundances]
+
+R_galah = '20000'
 date_string = '20180327'
-spectra_file_list = ['galah_dr53_ccd1_4710_4910_wvlstep_0.040_ext4_R19000_'+date_string+'.pkl',
-                     'galah_dr53_ccd2_5640_5880_wvlstep_0.050_ext4_R19000_'+date_string+'.pkl',
-                     'galah_dr53_ccd3_6475_6745_wvlstep_0.060_ext4_R19000_'+date_string+'.pkl',
-                     'galah_dr53_ccd4_7700_7895_wvlstep_0.070_ext4_R19000_'+date_string+'.pkl']
+spectra_file_list = ['galah_dr53_ccd1_4710_4910_wvlstep_0.040_ext4_R'+R_galah+'_'+date_string+'.pkl',
+                     'galah_dr53_ccd2_5640_5880_wvlstep_0.050_ext4_R'+R_galah+'_'+date_string+'.pkl',
+                     'galah_dr53_ccd3_6475_6745_wvlstep_0.060_ext4_R'+R_galah+'_'+date_string+'.pkl',
+                     'galah_dr53_ccd4_7700_7895_wvlstep_0.070_ext4_R'+R_galah+'_'+date_string+'.pkl']
 
-min_wvl = np.array([4710, 5640, 6475, 7700])
-max_wvl = np.array([4910, 5880, 6775, 7895])
+min_wvl = np.array([4720, 5660, 6480, 7700])
+max_wvl = np.array([4900, 5870, 6730, 7880])
 
 f_g_use = list([])
 w_g_use = list([])
-read_bands = [1,2]
+read_bands = [0, 1, 2]
 ccd_str = '_ccd'+''.join([str(c+1) for c in read_bands])
 for i_b in read_bands:  # [0, 1, 2, 3]:
     # parse interpolation and averaging settings from filename
@@ -56,41 +73,62 @@ f_g_use = np.hstack(f_g_use)
 print f_g_use.shape
 
 # nan values handling
-idx_nan = ~ np.isfinite(spectral_data)
+idx_nan = ~ np.isfinite(f_g_use)
 n_nan = np.sum(idx_nan)
 if n_nan > 0:
     print 'Correcting '+str(n_nan)+' nan values'
     f_g_use[idx_nan] = 1.
 
 # negative values handling
-idx_neg = spectral_data < 0.
+idx_neg = f_g_use < 0.
 if np.sum(idx_neg) > 0:
+    print 'Correcting neg values'
     f_g_use[idx_neg] = 0.
 # large positive values handling
 idx_gros = f_g_use > 1.3
 if np.sum(idx_gros) > 0:
+    print 'Correcting large values'
     f_g_use[idx_gros] = 1.3
 
+survey_name = 'TRIPLE'
+obs_dir = asiago_data_dir+survey_name+'_spectra/'
+obs_fits = survey_name+'_reduced.fits'
+subdir_out = asiago_data_dir+survey_name+'_params_R'+R_galah
 
-obs_dir = '/home/klemen/Asiago-Echelle-spectra/MCMC_Cannon_model_R20K/'
-obs_list = ['EC60966', 'EC60968', 'EC60970', 'EC60972', 'EC60974', 'EC60976', 'EC61147']
-obs_rv = [8.7, 1.4, -19.8, 14.9, -45.1, -74.7, -4.7]
+obs_fits_out = obs_fits[:-5]+'_params.fits'
+survey_data = Table.read(obs_dir + obs_fits)
+
+# add additional cols to the table if not present
+for elem in elements:
+    if elem not in survey_data.colnames:
+        survey_data[elem] = np.nan
+
+os.system('mkdir '+subdir_out)
+os.chdir(subdir_out)
 
 # read observed spectra
-for i_o, obs_file in enumerate(obs_list):
+for i_o, obs_spec_data in enumerate(survey_data):
+    obs_file = obs_spec_data['Asiago_id'].split('_')[0]
     print obs_file
-    obs_data = fits.open(obs_dir + obs_file + '_1D_vh_norm.0001.fits')
+    if 'comb' in obs_spec_data['Asiago_id']:
+        obs_data = fits.open(obs_dir + obs_file + '_1D_vh_comb_norm.0001.fits')
+    else:
+        obs_data = fits.open(obs_dir + obs_file + '_1D_vh_norm.0001.fits')
     obs_flx_orig = obs_data[0].data
     obs_wvl_orig = obs_data[0].header['CRVAL1'] + np.arange(len(obs_flx_orig)) * obs_data[0].header['CDELT1']
 
-    # RV shift
-    obs_wvl_new = obs_wvl_orig * (1. - obs_rv[i_o] / 299792.458)
-    obs_flx_use = np.interp(w_g_use, obs_wvl_new, obs_flx_orig)
+    # re-normalize parts of the observed spectrum that will be used in the comparison
+    print 'Renormalizing observed Asiago spectrum'
+    for i_b in read_bands:
+        idx_renorm = np.where(np.logical_and(obs_wvl_orig >= min_wvl[i_b], obs_wvl_orig <= max_wvl[i_b]))[0]
+        obs_flx_orig[idx_renorm] = spectra_normalize(obs_wvl_orig[idx_renorm] - np.mean(obs_wvl_orig[idx_renorm]),
+                                                     obs_flx_orig[idx_renorm],
+                                                     steps=11, sigma_low=2., sigma_high=3., order=9, n_min_perc=5.,
+                                                     return_fit=False, func='poly')
 
-    # re-normalize observed spectrum
-    obs_flx_use = spectra_normalize(w_g_use - np.mean(w_g_use), obs_flx_use,
-                                steps=11, sigma_low=2., sigma_high=3., order=9, n_min_perc=5.,
-                                return_fit=False, func='poly')
+    # RV shift
+    obs_wvl_new = obs_wvl_orig * (1. - obs_spec_data['rv'] / 299792.458)
+    obs_flx_use = np.interp(w_g_use, obs_wvl_new, obs_flx_orig)
 
     # quick spectral distance
     # idx_sim_mask = np.where(obs_flx_use < 0.975)[0]
@@ -169,5 +207,49 @@ for i_o, obs_file in enumerate(obs_list):
     plt.tight_layout()
     plt.savefig(obs_file+'_params_cannon_2.png', dpi=250)
     plt.close(fig)
+    
+    # add results to the tale
+    survey_data[i_o]['teff'] = val_median_all[0]
+    survey_data[i_o]['logg'] = val_median_all[1]
+    survey_data[i_o]['feh'] = val_median_all[2]
 
     # abundance determination in a similar ways
+    idx_param_space = np.abs(ref_cannon['Teff_cannon'] - val_median_all[0]) < 2*val_std_all[0]
+    idx_param_space = np.logical_and(idx_param_space, np.abs(ref_cannon['Logg_cannon'] - val_median_all[1]) < 2*val_std_all[1])
+    idx_param_space = np.logical_and(idx_param_space, np.abs(ref_cannon['Fe_H_cannon'] - val_median_all[2]) < 2*val_std_all[2])
+    idx_param_space = np.logical_and(idx_param_space, ref_cannon['flag_cannon'] == 0)
+    idx_param_space = np.where(idx_param_space)[0]
+
+    for i_a, abund in enumerate(abundances):
+        elem = abund.split('_')[0]
+        print abund
+        idx_sim_mask = np.where(get_linelist_mask(w_g_use, d_wvl=0., element=elem))[0]
+
+        if len(idx_sim_mask) == 0:
+            print '  No lines found for element'
+            continue
+
+        ref_dist = np.sqrt(np.sum(((f_g_use - obs_flx_use) ** 2)[:, idx_sim_mask], axis=1))
+        idx_param_space_sel = np.argsort(ref_dist[idx_param_space])[:75]
+        idx_ref_dist = idx_param_space[idx_param_space_sel]
+
+        fig, ax = plt.subplots(1, 2, figsize=(9, 5))
+        for i in idx_ref_dist:
+            ax[0].plot(f_g_use[i, idx_sim_mask], c='blue', alpha=0.05)
+        ax[0].plot(obs_flx_use[idx_sim_mask], c='black', alpha=1)
+
+        vals = ref_cannon[abund][idx_ref_dist]
+        idx_flag_ok = ref_cannon['flag_'+abund][idx_ref_dist] == 0
+        val_median = np.nanmedian(vals[idx_flag_ok])
+        survey_data[i_o][elem] = val_median
+
+        ax[1].hist(vals, range=(-2.5, 2), bins=100, label='All abund')
+        ax[1].hist(vals[idx_flag_ok], range=(-2.5, 2), bins=100, label='Flag 0 abund')
+        ax[1].axvline(val_median, color='black', ls='--')
+        ax[1].grid(color='black', ls='--', alpha=0.25)
+
+        plt.tight_layout()
+        plt.savefig(obs_file + '_params_cannon_3_'+abund+'.png', dpi=250)
+        plt.close()
+
+    survey_data.write(obs_fits_out, overwrite=True)
