@@ -5,14 +5,14 @@ import astropy.units as un
 from astropy.time import Time
 from astroplan import Observer
 
-c_data = Table.read('/home/klemen/data4_mount/clusters/Kharchenko_2013/catalog.csv')
+c_data = Table.read('/data4/cotar/clusters/Kharchenko_2013/catalog.csv')
 
 # assiago coordinate
 site = 'Mt. Ekar 182 cm. Telescope'
 
 # requested day
-day = 28
-month = 8
+day = 23
+month = 9
 year = 2018
 time_day_start = Time('{:04.0f}-{:02.0f}-{:02.0f} 12:00:00'.format(year, month, day), scale='utc')  # begin the same day
 time_day_end = Time('{:04.0f}-{:02.0f}-{:02.0f} 12:00:00'.format(year, month, day+1), scale='utc')  # end next day
@@ -59,7 +59,7 @@ txt_visibi.write('Cluster visibility and altitude in brackets at given UT times.
 txt_visibi.write('Night between '+obs_start.utc.iso+' and '+obs_end.utc.iso+' UTC (civil twilight)\n')
 txt_visibi.write('=============================================================================\n\n\n')
 
-use_cluster_from = ['NGC', 'IC', 'ASCC', 'Melotte']
+use_cluster_from = ['NGC', 'IC', 'ASCC', 'Melotte', 'Ruprecht', 'Platais', 'Blanco']
 
 all_observable = list([])
 all_interesting_clusters = list([])
