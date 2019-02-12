@@ -38,26 +38,27 @@ os.environ['PYRAF_BETA_STATUS'] = '1'
 surveys = {
 # -----------------------------------------
 # -----------------------------------------
-# ----------- TEST ------------------------
+# ----------- TEST and REFERENCE ----------
 # -----------------------------------------
 # -----------------------------------------
 'WAV_REF_GEN':[
+#'TEST':[
 {   
-	'DATE_DIR':'201801',
-	'ID_field': 'source_id',
-	'biases':['EC60718', 'EC60719', 'EC60720', 'EC60721', 'EC60722'], 
-        'flats':[], 
+	'DATE_DIR':'201901',
+	'ID_field': 'sobject_id',
+	'biases':['EC62399','EC62400','EC62401','EC62402','EC62403'], 
+	'flats':['EC62396','EC62397','EC62398'], 
 	'objects':
 		[
 		{
-			'spectra': ['EC60707'], 
-			'calibs':  ['EC60708'],
-			'ID': -1,
-			'obj_name': 'N/A',
-		},
+			'spectra': ['EC62365'], 
+			'calibs':  ['EC62366'], 
+			'ID': 0,
+			'obj_name': '',
+		},		
 		],
-	'REF_ARC': None, 
-	'REF_AP': None, 
+	'REF_ARC':None, 
+	'REF_AP':'', 
 	'ap_position':'center',
         'combine_exp': False
 }
@@ -69,7 +70,7 @@ surveys = {
 # -----------------------------------------
 'BRIGHT_STARS':[
 {   
-
+# TODO: fill with observed stars - mostly (or only) in 201804
 }
 ],
 # -----------------------------------------
@@ -92,7 +93,7 @@ surveys = {
 			'obj_name': '2MASS J11333341-0043060'
 		}		
 		],
-	'REF_ARC': None,  # 'ecEC60975.ec', 
+	'REF_ARC': None, 
 	'REF_AP': '', 
 	'ap_position':'left',
         'combine_exp': True
@@ -148,7 +149,7 @@ surveys = {
 			'obj_name': 'TYC 2160-224-1',
 		}
 		],
-	'REF_ARC':'ecEC60975.ec', 
+	'REF_ARC':None, 
 	'REF_AP':'', 
 	'ap_position':'center',
         'combine_exp': True
@@ -245,12 +246,48 @@ surveys = {
 			'obj_name': 'HD 335040',
 		}
 		],
-	'REF_ARC':'ecEC60975.ec', 
+	'REF_ARC':None, 
 	'REF_AP':'', 
 	'ap_position':'center',
         'combine_exp': True
 },
-
+{   
+	'DATE_DIR':'201809',
+	'ID_field': 'source_id',
+	'biases':['EC61355','EC61356','EC61357','EC61358','EC61359','EC61360','EC61361'], 
+	'flats':['EC61362','EC61363','EC61364','EC61365'], 
+	'objects':
+		[
+		{
+			'spectra': ['EC61320', 'EC61322'], 
+			'calibs':  ['EC61321', 'EC61321'], 
+			'ID': 1857223062294236416,
+			'obj_name': 'HD 340770',
+		},
+		{
+			'spectra': ['EC61323', 'EC61325'], 
+			'calibs':  ['EC61324', 'EC61324'], 
+			'ID': 1857461553227085056,
+			'obj_name': 'TYC 2169-953-1',
+		},
+		{
+			'spectra': ['EC61326', 'EC61328'], 
+			'calibs':  ['EC61327', 'EC61327'], 
+			'ID': 1860010530433894784,
+			'obj_name': 'HD 340182',
+		},
+		{
+			'spectra': ['EC61380', 'EC61382'],  # poor conditions for both exposures
+			'calibs':  ['EC61381', 'EC61383'], 
+			'ID': 1857535701556727680,
+			'obj_name': 'HD 334739',
+		}
+		],
+	'REF_ARC':None, 
+	'REF_AP':'', 
+	'ap_position':'center',
+        'combine_exp': True
+},
 ],
 # -----------------------------------------
 # -----------------------------------------
@@ -340,6 +377,110 @@ surveys = {
 	'ap_position':'center',
         'combine_exp': True
 },
+{   
+	'DATE_DIR':'201812',
+	'ID_field': 'sobject_id',
+	'biases':['EC62044','EC62045','EC62046','EC62047','EC62048','EC62049','EC62050'], 
+	'flats':['EC62051','EC62052','EC62053','EC62054','EC62055'], 
+	'objects':
+		[
+		{
+			'spectra': ['EC62040','EC62042'], 
+			'calibs':  ['EC62041','EC62043'], 
+			'ID': 150411004101331,
+			'obj_name': 'TYC 4923-896-1',
+		},
+                {
+			'spectra': ['EC62069','EC62071'], 
+			'calibs':  ['EC62070','EC62072'], 
+			'ID': 150409002601317,
+			'obj_name': '2MASS J11432902-0430241',
+		},
+                {
+			'spectra': ['EC62107','EC62109'], 
+			'calibs':  ['EC62108','EC62110'], 
+			'ID': 160401003901215,
+			'obj_name': 'TYC 5546-59-1',
+		}			
+		],
+	'REF_ARC':None,  
+	'REF_AP':'', 
+	'ap_position':'center',
+        'combine_exp': True
+},
+{   
+	'DATE_DIR':'201901',
+	'ID_field': 'sobject_id',
+	'biases':['EC62399','EC62400','EC62401','EC62402','EC62403'], 
+	'flats':['EC62396','EC62397','EC62398'], 
+	'objects':
+		[
+		{
+			'spectra': ['EC62293','EC62295'], 
+			'calibs':  ['EC62294','EC62294'], 
+			'ID': 151111002101170,
+			'obj_name': 'TYC 20-218-1',
+		},
+                {
+			'spectra': ['EC62301','EC62303'], 
+			'calibs':  ['EC62302','EC62304'], 
+			'ID': 170102001901154,
+			'obj_name': 'TYC 1387-334-1',
+		},
+                {
+			'spectra': ['EC62305','EC62307'], 
+			'calibs':  ['EC62306','EC62308'], 
+			'ID': 170412002401082,
+			'obj_name': 'TYC 6014-1231-1',
+		},
+                {
+			'spectra': ['EC62309','EC62311'], 
+			'calibs':  ['EC62310','EC62312'], 
+			'ID': 160130005201082,
+			'obj_name': 'TYC 6056-1107-1',
+		},
+                {
+			'spectra': ['EC62323'], 
+			'calibs':  ['EC62324'], 
+			'ID': 170508004801312,
+			'obj_name': 'TYC 6186-1546-1',
+		},
+                {
+			'spectra': ['EC62328','EC62330'], 
+			'calibs':  ['EC62329','EC62331'], 
+			'ID': 151111002101059,
+			'obj_name': 'TYC 21-93-1',
+		},
+                {
+			'spectra': ['EC62332','EC62334'], 
+			'calibs':  ['EC62333','EC62335'], 
+			'ID': 151111002101116,
+			'obj_name': 'TYC 4682-1181-1',
+		},
+                {
+			'spectra': ['EC62345','EC62347'], 
+			'calibs':  ['EC62346','EC62348'], 
+			'ID': 161228002501030,
+			'obj_name': 'tri0816',
+		},
+                {
+			'spectra': ['EC62359','EC62361'], 
+			'calibs':  ['EC62360','EC62362'], 
+			'ID': 150409005601390,
+			'obj_name': 'tri1101',
+		},
+                {
+			'spectra': ['EC62369'], 
+			'calibs':  ['EC62370'], 
+			'ID': 161006004401018,
+			'obj_name': 'TYC 12-345-1',
+		}		
+		],
+	'REF_ARC':None, 
+	'REF_AP':'', 
+	'ap_position':'center',
+        'combine_exp': True
+},
 ],
 # -----------------------------------------
 # -----------------------------------------
@@ -357,35 +498,139 @@ surveys = {
 		{
 			'spectra': ['EC61240'], 
 			'calibs':  ['EC61241'], 
-			'ID': 0,
+			'ID': 3236079328631677824,
 			'obj_name': 'TYC 105-1958-1',
 		},
                 {
 			'spectra': ['EC61242'], 
 			'calibs':  ['EC61243'], 
-			'ID': 0,
-			'obj_name': 'TYC 105-15-1',
+			'ID': 3222282278769474304,
+			'obj_name': 'TYC 101-15-1',
 		},
                 {
 			'spectra': ['EC61244'], 
 			'calibs':  ['EC61245'], 
-			'ID': 0,
+			'ID': 3222261594207038464,
 			'obj_name': 'HD 287842',
 		},
                 {
 			'spectra': ['EC61273'], 
 			'calibs':  ['EC61274'], 
-			'ID': 0,
+			'ID': 3222164901606950784,
 			'obj_name': 'HD 287845',
 		},
                 {
 			'spectra': ['EC61275'], 
 			'calibs':  ['EC61276'], 
-			'ID': 0,
+			'ID': 3220462655745525632,
 			'obj_name': 'HD 290380',
 		}		
 		],
-	'REF_ARC':'ecEC60975.ec', 
+	'REF_ARC':None, 
+	'REF_AP':'', 
+	'ap_position':'center',
+        'combine_exp': False
+},
+{   
+	'DATE_DIR':'201809',
+	'ID_field': 'source_id',
+	'biases':[' ','EC61356','EC61357','EC61358','EC61359','EC61360','EC61361'], 
+	'flats':['EC61362','EC61363','EC61364','EC61365'], 
+	'objects':
+		[
+		{
+			'spectra': ['EC61340'], 
+			'calibs':  ['EC61341'], 
+			'ID': 3223817128282174976,
+			'obj_name': 'HD 35911',
+		},
+		{
+			'spectra': ['EC61388'], 
+			'calibs':  ['EC61389'], 
+			'ID': 3223831971689138688,
+			'obj_name': 'HD 287888',
+		},
+		{
+			'spectra': ['EC61390'], 
+			'calibs':  ['EC61391'], 
+			'ID': 3223708826387363072,
+			'obj_name': 'HD 288061',
+		},
+		{
+			'spectra': ['EC61392'], 
+			'calibs':  ['EC61393'], 
+			'ID': 3223540841626655360,
+			'obj_name': 'HD 287974',
+		},
+		{
+			'spectra': ['EC61394'], 
+			'calibs':  ['EC61395'], 
+			'ID': 3222286127060186368,
+			'obj_name': 'TYC 105-146-1',
+		}			
+		],
+	'REF_ARC':None,  
+	'REF_AP':'', 
+	'ap_position':'center',
+        'combine_exp': False
+},
+{   
+	'DATE_DIR':'201812',
+	'ID_field': 'source_id',
+	'biases':['EC62044','EC62045','EC62046','EC62047','EC62048','EC62049','EC62050'], 
+	'flats':['EC62051','EC62052','EC62053','EC62054','EC62055'], 
+	'objects':
+		[
+		{
+			'spectra': ['EC62086'], 
+			'calibs':  ['EC62087'], 
+			'ID': 3220620813620479488,
+			'obj_name': 'HD 290356',
+		},
+                {
+			'spectra': ['EC62088'], 
+			'calibs':  ['EC62089'], 
+			'ID': 3221694418005734656,
+			'obj_name': 'HD 290198',
+		},
+                {
+			'spectra': ['EC62090'], 
+			'calibs':  ['EC62091'], 
+			'ID': 3222164905902845952,
+			'obj_name': 'HD 287845',
+		},
+                {
+			'spectra': ['EC62092'], 
+			'calibs':  ['EC62093'], 
+			'ID': 3222191221167193216,
+			'obj_name': 'HD 287854',
+		},
+                {
+			'spectra': ['EC62094'], 
+			'calibs':  ['EC62095'], 
+			'ID': 3222068419461962240,
+			'obj_name': 'HD 287802',
+		},
+                {
+			'spectra': ['EC62096'], 
+			'calibs':  ['EC62097'], 
+			'ID': 3223747854754812544,
+			'obj_name': '2MASS J05292353+0207150',
+		},
+                {
+			'spectra': ['EC62098'], 
+			'calibs':  ['EC62099'], 
+			'ID': 3222243344890328576,
+			'obj_name': 'TYC 101-171-1',
+		},
+                {
+			'spectra': ['EC62100'], 
+			'calibs':  ['EC62101'], 
+			'ID': 3222306193147280000,
+			'obj_name': 'TYC 105-350-1',
+		}		
+		],
+	'REF_ARC':None,  
 	'REF_AP':'', 
 	'ap_position':'center',
         'combine_exp': False
@@ -410,36 +655,42 @@ surveys = {
 			'calibs':  ['EC60967'], 
 			'ID': 0,
 			'obj_name': 'HIP110341',
+                        'RV_ref': 8.627
 		},
                 {
 			'spectra': ['EC60968'], 
 			'calibs':  ['EC60969'], 
 			'ID': 0,
 			'obj_name': 'HIP100017',
+                        'RV_ref': -4.455
 		},
                 {
 			'spectra': ['EC60970'], 
 			'calibs':  ['EC60971'], 
 			'ID': 0,
 			'obj_name': 'HIP078424',
+                        'RV_ref': -21.748
 		},
                 {
 			'spectra': ['EC60972'], 
 			'calibs':  ['EC60973'], 
 			'ID': 0,
 			'obj_name': 'HIP085268',
+                        'RV_ref': 13.495
 		},
                 {
 			'spectra': ['EC60974'], 
 			'calibs':  ['EC60975'], 
 			'ID': 0,
 			'obj_name': 'HIP083389',
+                        'RV_ref': -46.883
 		},
                 {
 			'spectra': ['EC60976'], 
 			'calibs':  ['EC60977'], 
 			'ID': 0,
 			'obj_name': 'HIP085653',
+                        'RV_ref': -83.98
 		}		
 		],
 	'REF_ARC':None,  # 'ecEC60975.ec', 
@@ -459,6 +710,7 @@ surveys = {
 			'calibs':  ['EC61148'], 
 			'ID': 0,
 			'obj_name': 'HIP100017',
+                        'RV_ref': -4.455
 		}		
 		],
 	'REF_ARC':None,  # 'ecEC60975.ec', 
@@ -466,18 +718,109 @@ surveys = {
 	'ap_position':'center',
         'combine_exp': False
 }
-]
+],
+# -----------------------------------------
+# -----------------------------------------
+# ----------- GAIA BENCHMARK --------------
+# -----------------------------------------
+# -----------------------------------------
+'GAIA_BENCH':[
+{   
+	'DATE_DIR':'201809',
+	'ID_field': 'source_id',
+	'biases':['EC61355','EC61356','EC61357','EC61358','EC61359','EC61360','EC61361'], 
+	'flats':['EC61362','EC61363','EC61364','EC61365'], 
+	'objects':
+		[
+		{
+			'spectra': ['EC61329','EC61331'], 
+			'calibs':  ['EC61330','EC61330'], 
+			'ID': 2661005953843811456,
+			'obj_name': 'HD 220009',
+		},		
+		{
+			'spectra': ['EC61332','EC61334'], 
+			'calibs':  ['EC61333','EC61333'], 
+			'ID': 3250489115708824064,
+			'obj_name': 'HD  22879',
+		},		
+		{
+			'spectra': ['EC61342','EC61344'], 
+			'calibs':  ['EC61343','EC61343'], 
+			'ID': 1823067317695767552,
+			'obj_name': 'gam Sge',
+		},		
+		{
+			'spectra': ['EC61368','EC61370'], #,'EC61366'], - saturated
+			'calibs':  ['EC61367','EC61369'], 
+			'ID': -1,
+			'obj_name': 'alf Cet',
+		},		
+		{
+			'spectra': ['EC61371'], #,'EC61373'], - saturated
+			'calibs':  ['EC61372'], #,'EC61372'], - saturated
+			'ID': -1,
+			'obj_name': 'alf Tau',
+		}		
+		],
+	'REF_ARC':None,  
+	'REF_AP':'', 
+	'ap_position':'center',
+        'combine_exp': True
+}
+],
 
+# -----------------------------------------
+# -----------------------------------------
+# ----------- GREGOR TEST OBJECTS ---------
+# -----------------------------------------
+# -----------------------------------------
+'GREGOR_TEST':[
+{   
+	'DATE_DIR':'201704',
+	'ID_field': 'source_id',
+	'biases':['EC59521','EC59522','EC59523','EC59524','EC59525'], 
+	'flats':['EC59517','EC59518','EC59519','EC59520'], 
+	'objects':
+		[
+		{
+			'spectra': ['EC59435'], 
+			'calibs':  ['EC59436'], 
+			'ID': 0,
+			'obj_name': '',
+		},
+		{
+			'spectra': ['EC59444'], 
+			'calibs':  ['EC59445'], 
+			'ID': 0,
+			'obj_name': '',
+		},
+		{
+			'spectra': ['EC59495'], 
+			'calibs':  ['EC59496'], 
+			'ID': 0,
+			'obj_name': '',
+		},
+		],
+	'REF_ARC':None,  
+	'REF_AP':'', 
+	'ap_position':'left',
+        'combine_exp': False
+},
+],
 }
 
 AP_LIM = {'left': [-20, 10, '-19:-11'], 'center': [-15, 15, '-15:-10,10:15']}
 
-root_dir_data = '/home/nandir/gigli/home/janez/ftp/asiago_observations/'
+root_dir_data = '/home/nandir/gigli2/media/hdd/home2/janez/ftp/asiago_observations/'
 root_dir_arcs = '/home/nandir/IRAF_Echelle_Asiago/Reduction_pipeline/ref_wav_files_manual/'
+#root_dir_arcs = '/home/nandir/IRAF_Echelle_Asiago/Reduction_pipeline/ref_wav_files/'
+root_dir_apref = '/home/nandir/IRAF_Echelle_Asiago/Reduction_pipeline/ref_ap_files/'
 root_dir_rvref = '/home/nandir/IRAF_Echelle_Asiago/Reduction_pipeline/ref_rv_files/'
 
 process_survey = 'TRIPLE'
 REWRITE = False  # cheks if result is already present and skips processing of that stage accordingly
+REREDUCE = False  # run reduction procedure again?
 REANALYSE = True  # does RV and parameter determination have to be run again if results already exist
 
 def main():
@@ -527,6 +870,7 @@ def main():
      # Individually reduce every object observed on this date
      for i_o in range(len(survey_cur_date['objects'])):
        obj_spectra_data = survey_cur_date['objects'][i_o]
+
        folder_cleaned = clean_folder_write_header(obj_spectra_data, root_dir_cur_date, rewrite=REWRITE)
        if folder_cleaned:
          bias_correct(obj_spectra_data, mbias)  
@@ -534,8 +878,12 @@ def main():
          # remove_cosmics(obj_spectra_data) 
 
        # spectrum extraction
+       if survey_cur_date['REF_AP'] is not '':
+         ref_ap_use = root_dir_apref + survey_cur_date['REF_AP']
+       else:
+         ref_ap_use = None
        AP_LIM_use = AP_LIM[survey_cur_date['ap_position']]
-       do_apall_for_real(obj_spectra_data, AP_LIM_use, rewrite=REWRITE)  
+       do_apall_for_real(obj_spectra_data, AP_LIM_use, rewrite=REWRITE, ref_ap=ref_ap_use)  
        apply_apall(obj_spectra_data, AP_LIM_use, rewrite=REWRITE)  
 
        # determine wavelength solution
@@ -543,21 +891,24 @@ def main():
          wavelength_solution_ref_create(obj_spectra_data)
          continue
  
-       wavelength_solution(obj_spectra_data, root_dir_arcs, survey_cur_date['REF_ARC']) 
-       apply_wav_solution(obj_spectra_data, include_cal=False)
-       vhelio_correct(obj_spectra_data)   
+       wavelength_solution(obj_spectra_data, root_dir_arcs, survey_cur_date['REF_ARC'], rewrite=REWRITE) 
+       apply_wav_solution(obj_spectra_data, include_cal=False, rewrite=REWRITE)
+       vhelio_correct(obj_spectra_data, rewrite=REWRITE)   
 
        # check_spectra(obj_spectra_data, '.ec.vh') 
        final_norm_orders, final_norm_1d = combine_normalize_images(obj_spectra_data, combine=survey_cur_date['combine_exp'])
 
        # TODO: check if spectra was already analyzed
-       #rvref_spec_list = glob(root_dir_rvref + 'T*K2SNWNVR20N.fits')
+       if 'RV_ref' in obj_spectra_data:
+         rv_ref_val = obj_spectra_data['RV_ref']
+       else:
+         rv_ref_val = np.nan
+       #rvref_spec_list = glob(root_dir_rvref+'*V000K2SNWNVR20N.fits')
        #rvref_spec_list = [rf.split('/')[-1].split('.')[0] for rf in rvref_spec_list]
        rvref_spec_list = ['solar']
-       #rvref_spec_list = ['EC60966','EC60968','EC60970','EC60972','EC60974','EC60976','EC61147']
-
-       rv_med, rv_std = get_RV_custom_corr_perorder(final_norm_orders, root_dir_rvref, rvref_spec_list, plot_rv=True)
+       rv_med, rv_std = get_RV_custom_corr_perorder(final_norm_orders, root_dir_rvref, rvref_spec_list, plot_rv=True, ref_val=rv_ref_val)
        print '    Final RV values:', rv_med, rv_std
+       #get_RV(obj_spectra_data, root_dir_rvref, rvref_spec_list, multi_ref=False, multi_sample=False, ref_val=rv_ref_val)
 
        # add results to table
        for i_f, final_img in enumerate(final_norm_orders):
@@ -584,7 +935,7 @@ def create_masterbias(obs_data, root_data, rewrite=True):
 
   try: os.remove(mb_filename)
   except: pass
-
+  
   iraf.zerocombine(input=','.join([root_data+i for i in obs_data['biases']]), output=mb_filename, combine='median', reject='none', ccdtype='', process='no', Stdout="/dev/null")
 
   return mb_filename
@@ -671,6 +1022,7 @@ def clean_folder_write_header(spec_data, root_data, rewrite=True):
     file.write('704 704 1262  2048\n703 705 1262  1277')  
 
   edit_fits = ','.join(spec_data['spectra']+spec_data['calibs'])
+
   iraf.hedit(images=edit_fits, fields='CCDSEC', value='[51:2098,1:2048]', add='yes', verify='no')
   iraf.hedit(images=edit_fits, fields='DATASEC', value='[51:2098,1:2048]', add='yes', verify='no') 
 
@@ -710,11 +1062,11 @@ def do_apall_for_real(obs_data, AP_LIM, ref_ap=None, rewrite=True):
 
   for obj in obs_data['spectra']:
     if ref_ap is not None:      
-      ref = observations[WORK_DIR]['REF_AP'].split('/')[-1].replace('ap', '')
+      ref = ref_ap.split('/')[-1].replace('ap', '')
     else:
       ref = obj
     print 'APALL',obj, ref
-    iraf.apall(input=obj, referen=ref, format='echelle', interac='yes', find='yes', recente='yes', resize='yes', edit='yes', trace='yes', fittrac='yes', extract='no', extras='no', review='no', line=600, nsum=30, lower=-6, upper=6, width=11, radius=11, thresho=0.15, nfind=35, minsep=10, maxsep=255, t_func='chebyshev', t_order=9, t_niter=5, backgro='median', b_order=1, b_sampl=AP_LIM[2], ylevel='INDEF', llimit=-5, ulimit=5, weights='none', clean='yes', order='increasing')#, apidtable='apert.txt')
+    iraf.apall(input=obj, referen=ref, format='echelle', interac='yes', find='yes', recente='yes', resize='yes', edit='yes', trace='yes', fittrac='yes', extract='no', extras='no', review='no', line=500, nsum=50, lower=-5, upper=5, width=5, radius=9, thresho=0.2, nfind=31, minsep=25, maxsep=255, t_func='chebyshev', t_order=11, t_niter=5, t_low_reject=2.5, t_high_reject=2.5, t_nsum=20, t_step=10, backgro='none', ylevel='INDEF', llimit=-5, ulimit=5, order='increasing')#, apidtable='apert.txt')
 
 def apply_apall(obs_data, AP_LIM, rewrite=True):
   print '\n + Applying apall to rest of the objects and arcs\n'
@@ -739,7 +1091,7 @@ def apply_apall(obs_data, AP_LIM, rewrite=True):
     except: pass 
     
     for j in [['.ec', 'median'], ['.ec.nosky', 'none']]:
-      iraf.apall(input=obj, output=obj+j[0], format='echelle', referen=obj, interac='no', find='yes', recente='no', resize='no', edit='yes', trace='no', fittrac='no', extract='yes', extras='no', review='no', line=600, nsum=30, lower=-5, upper=5, width=8, radius=10, thresho=0.1, nfind=35, minsep=10, maxsep=255, t_func='chebyshev', t_order=9, t_niter=5, backgro=j[1], b_order=1, b_sampl=AP_LIM[2], ylevel='INDEF', llimit=-5, ulimit=5, weights='none', clean='yes', order='increasing')#, apidtable='apert.txt')  
+      iraf.apall(input=obj, output=obj+j[0], format='echelle', referen=obj, interac='no', find='no', recente='no', resize='no', edit='no', trace='no', fittrac='no', extract='yes', extras='no', review='no', line=600, nsum=30, lower=-5, upper=5, width=8, radius=10, thresho=0.1, nfind=35, minsep=10, maxsep=255, t_func='chebyshev', t_order=9, t_niter=5, backgro=j[1], b_order=1, b_sampl=AP_LIM[2], ylevel='INDEF', llimit=-5, ulimit=5, weights='variance', clean='yes', pfit='fit1d', order='increasing')#, apidtable='apert.txt')  
 
   for i, cal in enumerate(obs_data['calibs']):
     print ' - Processing arc %s \n' % cal
@@ -747,7 +1099,7 @@ def apply_apall(obs_data, AP_LIM, rewrite=True):
     try: os.remove(cal+'.ec.fits')
     except: pass 
     print '   input:',cal,'    referen:', obs_data['spectra'][i]
-    iraf.apall(input=cal, format='echelle', referen=obs_data['spectra'][i], interac='no', find='no', recente='no', resize='no', edit='no',trace='no', fittrac='no', extract='yes', extras='no', review='no', line=600, nsum=30, lower=-5, upper=5, width=8, radius=10, thresho=0.1, nfind=35, minsep=10, maxsep=255, t_func='chebyshev', t_order=9, t_niter=5, backgro='none', ylevel='INDEF', llimit=-5, ulimit=5, order='increasing')#, apidtable='apert.txt')    
+    iraf.apall(input=cal, format='echelle', referen=obs_data['spectra'][i], interac='no', find='no', recente='no', resize='no', edit='no',trace='no', fittrac='no', extract='yes', extras='no', review='no', line=600, nsum=30, lower=-5, upper=5, width=8, radius=10, thresho=0.1, nfind=35, minsep=10, maxsep=255, t_func='chebyshev', t_order=9, t_niter=5, backgro='none', ylevel='INDEF', llimit=-5, ulimit=5, order='increasing', weights='variance', pfit='fit1d')#, apidtable='apert.txt')    
 
 def wavelength_solution_ref_create(obs_data, rewrite=True):
   print 'Creating new reference arc wavelength solution'
@@ -765,6 +1117,15 @@ def wavelength_solution(obs_data, arc_full_path, arc_file, rewrite=True):
   # This step will require you to calibrate first arc by hand. The rest will be done automatically.
   # after l (automatic find other lines) change x and y order to 4
   # x - choose plots of the fit (per order, pixel, ...)
+
+  if not rewrite:
+    n_miss = 0
+    for obj in obs_data['calibs']:
+      if not os.path.isfile('database/ec'+obj+'.ec'):
+        n_miss += 1
+    if n_miss == 0:
+      print '  -- Wavelength solutions already found.'
+      return False
 
   if arc_file is not None:
     # ref arc was given
@@ -809,10 +1170,15 @@ def wavelength_solution(obs_data, arc_full_path, arc_file, rewrite=True):
     
     print 'iraf.ecident'
     # lower number of maxfeat for less work while removing bad emissions in arc, incresed minsep
-    iraf.ecident(images=cal+'.ec', coordli='linelists$thar.dat', match=1, maxfeat=1250, ftype='emission', fwidth=4, cradius=5, thresho=2, minsep=3, functio='chebyshev', xorder=6, yorder=6, niterat=5, lowreje=3, highreje=3, autowri='yes')
+    iraf.ecident(images=cal+'.ec', coordli='linelists$thar.dat', match=0.025, maxfeat=1200, ftype='emission', fwidth=4, cradius=5, thresho=2, minsep=3, functio='chebyshev', xorder=6, yorder=6, niterat=7, lowreje=2.5, highreje=2.5, autowri='yes')
 
 def apply_wav_solution(obs_data, include_cal=False, rewrite=True):
   print '\n + Applying the wavelength solution\n'
+
+  if not rewrite:
+    # TODO: proper check for this
+    # look into fits header
+    pass
   
   iraf.unlearn('dispcor')
 
@@ -829,8 +1195,18 @@ def apply_wav_solution(obs_data, include_cal=False, rewrite=True):
       iraf.refspectra(input=cal, referen=cal, sort='', group='', confirm='no', Stdout="/dev/null")
       iraf.dispcor(input=cal, output=cal+'_wvl', lineari='no', verbose='yes')
 
-def vhelio_correct(obs_data):
+def vhelio_correct(obs_data, rewrite=True):
   print '\n + VHELIO correction\n'
+
+  if not rewrite:
+    n_miss = 0
+    for obj in obs_data['spectra']:
+      obj = obj+'.ec'
+      if not os.path.isfile(obj+'.vh.fits'):
+        n_miss += 1
+    if n_miss == 0:
+      print '  -- VHELIO correction already performed.'
+      return False
     
   for obj in obs_data['spectra']:
     obj = obj+'.ec'
@@ -852,14 +1228,14 @@ def vhelio_correct(obs_data):
     iraf.hedit(images=obj+'.vh', fields='UT', value=h+m/60.+s/3600., add='yes', verify='no')
     iraf.hedit(images=obj+'.vh', fields='EPOCH', value=year, add='yes', verify='no')
     iraf.rvcorrect(images=obj+'.vh', imupdat='yes', epoch=year, observa='ekar', year=year, month=month, day=day, ut=h+m/60.+s/3600., ra=ra, dec=dec)
-    iraf.dopcor(input=obj+'.vh', redshift='-vhelio', isveloc='yes', dispers='yes')
+    iraf.dopcor(input=obj+'.vh', output=None, redshift='-vhelio', isveloc='yes', dispers='yes', verbose='yes')
 
     obj = obj+'.nosky'
     shutil.copy(obj+'.fits', obj+'.vh.fits')
     iraf.hedit(images=obj+'.vh', fields='UT', value=h+m/60.+s/3600., add='yes', verify='no')
     iraf.hedit(images=obj+'.vh', fields='EPOCH', value=year, add='yes', verify='no')
     iraf.rvcorrect(images=obj+'.vh', imupdat='yes', epoch=year, observa='ekar', year=year, month=month, day=day, ut=h+m/60.+s/3600., ra=ra, dec=dec)
-    iraf.dopcor(input=obj+'.vh', redshift='-vhelio', isveloc='yes', dispers='yes')
+    iraf.dopcor(input=obj+'.vh', output=None, redshift='-vhelio', isveloc='yes', dispers='yes', verbose='yes')
 
 def combine_normalize_images(obs_data, combine=False):
   
@@ -955,10 +1331,88 @@ def export_spectrum_order_to_txt(exp_file, order=1):
       return None
       pass
 
-def get_RV_custom_corr_1D(obs_spectra, plot_rv=False, n_subsections = 31):
-  pass
+def get_RV(obs_data, rvref_dir, rv_ref_list, multi_ref=False, multi_sample=False, ref_val=np.nan):
 
-def get_RV_custom_corr_perorder(obs_spectra, rvref_dir, rvref_list, plot_rv=False, n_min_ord=5, n_max_ord=25):
+  for obj in obs_data['spectra']:
+    for rv_ref in rv_ref_list:
+      ts = time.time()
+      rvs = []
+      e_rvs = []
+      # determine barycentric RV
+      with open('RVS_'+obj+'_'+rv_ref+'.txt', 'w+') as file:
+
+        for order in np.arange(2, 31, 1):
+          try:
+            iraf.wspectext(input=obj+'_vh_norm.fits[*,'+str(order)+',1]', output='template.txt', header='no')
+            template = np.loadtxt('template.txt')
+            
+            wav = template[:, 0]        
+            mid1 = int(len(wav)/4.0)
+            mid2 = int(len(wav)/12.0)
+
+            wav1 = wav[mid1*1]
+            wav2 = wav[mid1*3]
+            #print 'WAV:', wav, mid1, wav1,wav2
+
+            # create multiple wav1, wav2 ranges if requested
+            if multi_sample:
+              wav_ranges = [[wav[mid2*2], wav[mid2*7]], [wav[mid2*4], wav[mid2*8]], [wav[mid2*5], wav[mid2*10]]]
+            else:
+              wav_ranges = [[wav1, wav2]]
+
+            for wav_r in wav_ranges:
+
+              iraf.unlearn('fxcor')
+              try:
+                os.remove('test.txt')
+                os.remove('test.log')
+                os.remove('test.gki')
+              except: pass
+              try:
+                os.remove('template.txt')
+              except: pass
+            
+              iraf.fxcor(obj+'.ec.vh', rvref_dir+rv_ref, apertures=order, pixcorr='no', continuum='both', 
+                         osample='a %s %s' % (wav_r[0], wav_r[1]), rsample='a %s %s' % (wav_r[0], wav_r[1]), 
+                         interactive='no', output='test', function = 'gaussian',
+                         apodize = 0.0, rebin = "smallest")
+              fields = np.loadtxt('test.txt', comments='#', dtype='str')
+              # print wav_r
+              # print fields
+              vrel, verr = fields[-3], fields[-1]
+
+              if vrel == 'INDEF' or np.float(verr) > 10. or np.abs(np.float(vrel)) > 350.:
+                vrel = np.nan
+                verr = np.nan
+
+              print order, vrel, verr              
+              file.write("%s %s %s\n" % (order, vrel, verr))
+          
+              rvs.append(float(vrel))
+              e_rvs.append(float(verr))
+
+          except:
+            print_exception()
+
+      rv_median = np.nanmedian(rvs)
+      plt.scatter(np.arange(len(rvs)),rvs)
+      plt.axhline(rv_median)
+      plt.ylim(rv_median-4., rv_median+4.)
+      plt.xlim(0-1., len(rvs)+1.)
+      if np.isfinite(ref_val):
+        plt.axhline(ref_val, label='Ref RV', c='black', ls='--')
+      plt.xlabel('Echelle order')
+      plt.ylabel('Radial velocity')
+      plt.title('Spectrum: '+obj+'     Reference: '+rv_ref)
+      plt.tight_layout()
+      plt.savefig(obj+'_'+rv_ref+'_rv_fxcor.png', dpi=250)
+      plt.close()
+        
+      print '%s: RV median: %s, RV mean: %s, RV sigma: %s' % (obj, np.nanmedian(rvs), np.nanmean(rvs), np.nanstd(rvs))
+      print 'RV fit time: '+str((time.time()-ts)/60.)+' min'
+      print ''
+
+def get_RV_custom_corr_perorder(obs_spectra, rvref_dir, rvref_list, plot_rv=False, n_min_ord=5, n_max_ord=25, ref_val=np.nan):
 
   # prepare reference file
   rv_obs_mean_final = list([])
@@ -976,7 +1430,7 @@ def get_RV_custom_corr_perorder(obs_spectra, rvref_dir, rvref_list, plot_rv=Fals
         order_txt_file = export_spectrum_order_to_txt(obs_spectrum, order=i_order)
         # print order_txt_file
         if order_txt_file is not None:
-          rv_shifts.append(correlate_order(order_txt_file, ref_flx, ref_wvl, plot=True))
+          rv_shifts.append(correlate_order(order_txt_file, ref_flx, ref_wvl, plot=False))
         else:
           rv_shifts.append(np.nan)
         # delete temp txt order file
@@ -1006,19 +1460,32 @@ def get_RV_custom_corr_perorder(obs_spectra, rvref_dir, rvref_list, plot_rv=Fals
         plt.axhline(rv_median)
         plt.ylim(rv_median-4., rv_median+4.)
         plt.xlim(rv_x[0]-1., rv_x[-1]+1.)
+        if np.isfinite(ref_val):
+          plt.axhline(ref_val, label='Ref RV', c='black', ls='--')
         plt.xlabel('Echelle order')
         plt.ylabel('Radial velocity')
         plt.title('Spectrum: '+obs_spectrum+'     Reference: '+use_revref)
         plt.tight_layout()
-        plt.savefig(obs_spectrum+'_'+use_revref+'_rv.png', dpi=300)
+        plt.savefig(obs_spectrum+'_'+use_revref+'_rv.png', dpi=250)
         plt.close()
 
-    idx_best_rv = np.nanargmin(rv_obs_std)
-    rv_obs_mean_final.append(rv_obs_mean[idx_best_rv])
-    rv_obs_std_final.append(rv_obs_std[idx_best_rv])
+    if np.sum(np.isfinite(rv_obs_std)==0):
+      rv_obs_mean_final.append(np.nan)
+      rv_obs_std_final.append(np.nan)
+    else:
+      idx_best_rv = np.nanargmin(rv_obs_std)
+      rv_obs_mean_final.append(rv_obs_mean[idx_best_rv])
+      rv_obs_std_final.append(rv_obs_std[idx_best_rv])
 
   # return all derived velocities and its std values
   return rv_obs_mean_final, rv_obs_std_final
+
+def print_exception():
+  e = sys.exc_info()
+  exc_type, exc_value, exc_traceback = e
+  a, j = (traceback.extract_tb(exc_traceback, 1))[0][0:2]
+  k = (traceback.format_exception_only(exc_type, exc_value))[0]
+  print a, j, k
 
 if __name__ == "__main__":
   main()

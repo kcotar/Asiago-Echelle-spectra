@@ -39,9 +39,9 @@ ref_fits_file[0].data = flx_ref
 ref_fits_file.writeto('solar_spectra_conv.fits', overwrite=True)
 
 # Prepare observed Echelle spectra to be used as a reference in fxcor
-s_dir = '/home/nandir/IRAF_Echelle_Asiago/Reduction_pipeline/observations/rv_stand2/'
-in_spectra = ['EC60966', 'EC60970', 'EC60972', 'EC60974', 'EC60976']
-rv_spectra = [8.627, -21.748, 13.495, -46.883, -83.98]
+s_dir = '/home/nandir/IRAF_Echelle_Asiago/Reduction_pipeline/observations/GAIA_RV_STAND/'
+in_spectra = ['EC60966', 'EC60968', 'EC60970', 'EC60972', 'EC60974', 'EC60976', 'EC61147']
+rv_spectra = [8.627, -4.455, -21.748, 13.495, -46.883, -83.98, -4.455]
 # rv_spectra = [2.108, -26.821, 6.904, -53.250, -90.766]  # incorrect test values
 for i_s in range(len(in_spectra)):
 	fits_data = fits.open(s_dir+in_spectra[i_s]+'_1D_vh_norm.0001.fits')

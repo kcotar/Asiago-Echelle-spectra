@@ -28,7 +28,7 @@ def get_linelist_mask(wvl_values_in, d_wvl=0., element=None):
     return idx_lines_mask
 
 
-galah_data_dir = '/data4/cotar/'
+galah_data_dir = '/shared/ebla/cotar/'
 asiago_data_dir = galah_data_dir+'Asiago_reduced_data/'
 
 ref_cannon = Table.read(galah_data_dir+'sobject_iraf_53_reduced_20180327.fits')['sobject_id', 'galah_id', 'ra', 'dec']
@@ -38,7 +38,7 @@ galah_linelist = Table.read(galah_data_dir + 'GALAH_Cannon_linelist_newer.csv')
 abundances = [c for c in ref_cannon.colnames if '_abund_' in c and len(c.split('_')) == 3]
 elements = [ab.split('_')[0] for ab in abundances]
 
-R_galah = '20000'
+R_galah = '19000'
 date_string = '20180327'
 spectra_file_list = ['galah_dr53_ccd1_4710_4910_wvlstep_0.040_ext4_R'+R_galah+'_'+date_string+'.pkl',
                      'galah_dr53_ccd2_5640_5880_wvlstep_0.050_ext4_R'+R_galah+'_'+date_string+'.pkl',
@@ -90,8 +90,8 @@ if np.sum(idx_gros) > 0:
     print 'Correcting large values'
     f_g_use[idx_gros] = 1.3
 
-survey_name = 'TRIPLE'
-obs_dir = asiago_data_dir+survey_name+'_spectra/'
+survey_name = 'ORION_CLUSTERS'
+obs_dir = asiago_data_dir+survey_name+'/'
 obs_fits = survey_name+'_reduced.fits'
 subdir_out = asiago_data_dir+survey_name+'_params_R'+R_galah
 
@@ -123,7 +123,7 @@ for i_o, obs_spec_data in enumerate(survey_data):
         idx_renorm = np.where(np.logical_and(obs_wvl_orig >= min_wvl[i_b], obs_wvl_orig <= max_wvl[i_b]))[0]
         obs_flx_orig[idx_renorm] = spectra_normalize(obs_wvl_orig[idx_renorm] - np.mean(obs_wvl_orig[idx_renorm]),
                                                      obs_flx_orig[idx_renorm],
-                                                     steps=11, sigma_low=2., sigma_high=3., order=9, n_min_perc=5.,
+                                                     steps=32, sigma_low=1.5, sigma_high=3., order=11, n_min_perc=5.,
                                                      return_fit=False, func='poly')
 
     # RV shift
@@ -137,9 +137,14 @@ for i_o, obs_spec_data in enumerate(survey_data):
     # ref_dist = np.sqrt(np.sum(((f_g_use - obs_flx_use) ** 2), axis=1))
     idx_ref_dist = np.argsort(ref_dist)[:250]
 
+    plt.figure(figsize=(45, 5))
     for i in idx_ref_dist:
-        plt.plot(w_g_use, f_g_use[i,:], c='blue', alpha=0.01)
-    plt.plot(w_g_use, obs_flx_use, c='black', alpha=1)
+        # plt.plot(w_g_use, f_g_use[i,:], c='blue', alpha=0.01, lw=0.8)
+        plt.plot(f_g_use[i,:], c='blue', alpha=0.01, lw=0.8)
+    # plt.plot(w_g_use, obs_flx_use, c='black', alpha=1, lw=0.8)
+    plt.plot(obs_flx_use, c='black', alpha=1, lw=0.8)
+    plt.ylim(0.3, 1.07)
+    plt.xlim(-1, len(obs_flx_use))
     plt.tight_layout()
     plt.savefig(obs_file + '_spectra_close_1.png', dpi=250)
     # plt.show()
@@ -152,22 +157,27 @@ for i_o, obs_spec_data in enumerate(survey_data):
     val_std_all = list([])
     for i_c, col in enumerate(['Teff_cannon', 'Logg_cannon', 'Fe_H_cannon']):
         vals = ref_cannon[col][idx_ref_dist]
-        idx_flag_ok = ref_cannon['flag_cannon'][idx_ref_dist] == 0
         range = (np.nanmin(vals), np.nanmax(vals))
-        val_median = np.nanmedian(vals[idx_flag_ok])
-        val_std = np.nanstd(vals[idx_flag_ok])
-        val_median_all.append(val_median)
-        val_std_all.append(val_std)
-        print val_median, val_std
         ax[i_c].hist(vals, range=range, bins=25, label='All Cannon')
-        ax[i_c].hist(vals[idx_flag_ok], range=range, bins=25, label='Flag 0 Cannon')
-        ax[i_c].axvline(val_median, color='black', ls='--')
-        ax[i_c].set(title='{:.2f}'.format(val_median))
+        idx_flag_ok = ref_cannon['flag_cannon'][idx_ref_dist] == 0
+        if np.sum(idx_flag_ok) > 0:
+            val_median = np.nanmedian(vals[idx_flag_ok])
+            val_std = np.nanstd(vals[idx_flag_ok])
+            val_median_all.append(val_median)
+            val_std_all.append(val_std)
+            print val_median, val_std
+            ax[i_c].hist(vals[idx_flag_ok], range=range, bins=25, label='Flag 0 Cannon')
+            ax[i_c].axvline(val_median, color='black', ls='--')
+            ax[i_c].set(title='{:.2f}'.format(val_median))
+        else:
+            val_median_all.append(np.nan)
+            val_std_all.append(np.nan)
     ax[1].legend()
     plt.tight_layout()
     plt.savefig(obs_file+'_params_cannon_1.png', dpi=250)
     plt.close(fig)
 
+    print val_median_all
     # search the closest within the selected parameter space
     idx_param_space = np.abs(ref_cannon['Teff_cannon'] - val_median_all[0]) < 2*val_std_all[0]
     idx_param_space = np.logical_and(idx_param_space, np.abs(ref_cannon['Logg_cannon'] - val_median_all[1]) < 2*val_std_all[1])
@@ -177,13 +187,21 @@ for i_o, obs_spec_data in enumerate(survey_data):
     idx_param_space_sel = np.argsort(ref_dist[idx_param_space])[:150]
     idx_ref_dist = idx_param_space[idx_param_space_sel]
 
+    plt.figure(figsize=(45, 5))
     for i in idx_ref_dist:
-        plt.plot(w_g_use, f_g_use[i,:], c='blue', alpha=0.01)
-    plt.plot(w_g_use, obs_flx_use, c='black', alpha=1)
+        # plt.plot(w_g_use, f_g_use[i,:], c='blue', alpha=0.01, lw=0.8)
+        plt.plot(f_g_use[i,:], c='blue', alpha=0.01, lw=0.8)
+    # plt.plot(w_g_use, obs_flx_use, c='black', alpha=1, lw=0.8)
+    plt.plot(obs_flx_use, c='black', alpha=1, lw=0.8)
+    plt.ylim(0.3, 1.07)
+    plt.xlim(-1, len(obs_flx_use))
     plt.tight_layout()
     plt.savefig(obs_file + '_spectra_close_2.png', dpi=250)
     # plt.show()
     plt.close()
+
+    if np.sum(idx_ref_dist) <= 0:
+        continue
 
     # histogram of selected neighbours parameters
     print ' Ploting parameters histogram'
@@ -192,17 +210,21 @@ for i_o, obs_spec_data in enumerate(survey_data):
     val_std_all = list([])
     for i_c, col in enumerate(['Teff_cannon', 'Logg_cannon', 'Fe_H_cannon']):
         vals = ref_cannon[col][idx_ref_dist]
-        idx_flag_ok = ref_cannon['flag_cannon'][idx_ref_dist] == 0
         range = (np.nanmin(vals), np.nanmax(vals))
-        val_median = np.nanmedian(vals[idx_flag_ok])
-        val_std = np.nanstd(vals[idx_flag_ok])
-        val_median_all.append(val_median)
-        val_std_all.append(val_std)
-        print val_median, val_std
         ax[i_c].hist(vals, range=range, bins=25, label='All Cannon')
-        ax[i_c].hist(vals[idx_flag_ok], range=range, bins=25, label='Flag 0 Cannon')
-        ax[i_c].axvline(val_median, color='black', ls='--')
-        ax[i_c].set(title='{:.2f}'.format(val_median))
+        idx_flag_ok = ref_cannon['flag_cannon'][idx_ref_dist] == 0
+        if np.sum(idx_flag_ok) > 0:
+            val_median = np.nanmedian(vals[idx_flag_ok])
+            val_std = np.nanstd(vals[idx_flag_ok])
+            val_median_all.append(val_median)
+            val_std_all.append(val_std)
+            print val_median, val_std
+            ax[i_c].hist(vals[idx_flag_ok], range=range, bins=25, label='Flag 0 Cannon')
+            ax[i_c].axvline(val_median, color='black', ls='--')
+            ax[i_c].set(title='{:.2f}'.format(val_median))
+        else:
+            val_median_all.append(np.nan)
+            val_std_all.append(np.nan)
     ax[1].legend()
     plt.tight_layout()
     plt.savefig(obs_file+'_params_cannon_2.png', dpi=250)
@@ -219,6 +241,9 @@ for i_o, obs_spec_data in enumerate(survey_data):
     idx_param_space = np.logical_and(idx_param_space, np.abs(ref_cannon['Fe_H_cannon'] - val_median_all[2]) < 2*val_std_all[2])
     idx_param_space = np.logical_and(idx_param_space, ref_cannon['flag_cannon'] == 0)
     idx_param_space = np.where(idx_param_space)[0]
+
+    if np.sum(idx_param_space) <= 0:
+        continue
 
     for i_a, abund in enumerate(abundances):
         elem = abund.split('_')[0]
@@ -240,12 +265,16 @@ for i_o, obs_spec_data in enumerate(survey_data):
 
         vals = ref_cannon[abund][idx_ref_dist]
         idx_flag_ok = ref_cannon['flag_'+abund][idx_ref_dist] == 0
-        val_median = np.nanmedian(vals[idx_flag_ok])
-        survey_data[i_o][elem] = val_median
+        if np.sum(idx_flag_ok) > 0:
+            abund_median = np.nanmedian(vals[idx_flag_ok])
+        else:
+            abund_median = np.nan
+        survey_data[i_o][elem] = abund_median
 
         ax[1].hist(vals, range=(-2.5, 2), bins=100, label='All abund')
-        ax[1].hist(vals[idx_flag_ok], range=(-2.5, 2), bins=100, label='Flag 0 abund')
-        ax[1].axvline(val_median, color='black', ls='--')
+        if np.sum(idx_flag_ok) > 0:
+            ax[1].hist(vals[idx_flag_ok], range=(-2.5, 2), bins=100, label='Flag 0 abund')
+            ax[1].axvline(abund_median, color='black', ls='--')
         ax[1].grid(color='black', ls='--', alpha=0.25)
 
         plt.tight_layout()

@@ -27,6 +27,8 @@ logfile
 # Documents
 *.pdf
 *.odt
+*.ps
+*.gif
 
 # Dump or log data
 *.pkl
@@ -36,4 +38,5 @@ logfile
 *.jpg
 *.png
 *.bmp
+*_ref
 

@@ -5,14 +5,18 @@ import astropy.units as un
 from astropy.time import Time
 from astroplan import Observer
 
+# update IERS Bulletin A table
+from astroplan import download_IERS_A
+download_IERS_A()
+
 c_data = Table.read('/data4/cotar/clusters/Kharchenko_2013/catalog.csv')
 
 # assiago coordinate
 site = 'Mt. Ekar 182 cm. Telescope'
 
 # requested day
-day = 23
-month = 9
+day = 25
+month = 11
 year = 2018
 time_day_start = Time('{:04.0f}-{:02.0f}-{:02.0f} 12:00:00'.format(year, month, day), scale='utc')  # begin the same day
 time_day_end = Time('{:04.0f}-{:02.0f}-{:02.0f} 12:00:00'.format(year, month, day+1), scale='utc')  # end next day
