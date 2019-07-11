@@ -30,6 +30,12 @@ logfile
 *.ps
 *.gif
 
+# LaTeX
+*.tex
+*.aux
+*.log
+*.gz
+
 # Dump or log data
 *.pkl
 *.out

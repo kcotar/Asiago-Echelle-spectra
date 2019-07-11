@@ -22,7 +22,7 @@ for txt_f in glob.glob(obs_dir+'EC59445.ec_wvl_order2*.txt'):
     if len(arc_data) <= 0:
         continue
     # print arc_data
-    plt.plot(arc_data[:, 0], arc_data[:, 1], color='black')
+    plt.plot(arc_data[:, 0], arc_data[:, 1], color='black', label='Arc spectrum')
     for a1, a2 in zip(arcs_man, arcs_det):
         try:
             plt.axvline(np.float(a1), ls='--', color='C3')
@@ -30,5 +30,10 @@ for txt_f in glob.glob(obs_dir+'EC59445.ec_wvl_order2*.txt'):
         except:
             pass
     plt.xlim(np.min(arc_data[:, 0]), np.max(arc_data[:, 0]))
+    plt.title(txt_f.split('/')[-1].split('.')[-2].split('_')[-1])
+    plt.xlabel('Wavelength')
+    plt.ylabel('Flux')
+    plt.tight_layout()
+    plt.legend()
     plt.show()
     plt.close()

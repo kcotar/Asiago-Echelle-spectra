@@ -31,10 +31,15 @@ obs_wvl_orig = obs_data[0].header['CRVAL1'] + np.arange(len(obs_flx_orig)) * obs
 rv_star = -10.5
 obs_wvl_rv = obs_wvl_orig * (1. - rv_star / 299792.458)
 
-plt.plot(obs_wvl_rv, obs_flx_orig, lw=1, c='black')
-plt.plot(sola_wvl, sola_flx, lw=1, c='C0')
-plt.plot(tell_wvl, 1. - (1. - tell_flx)*0.5, lw=1, c='C2')
+plt.plot(obs_wvl_rv, obs_flx_orig, lw=1, c='black', label='Observed')
+plt.plot(sola_wvl, sola_flx, lw=1, c='C0', label='Solar')
+plt.plot(tell_wvl, 1. - (1. - tell_flx)*0.5, lw=1, c='C2', label='Telluric')
 plt.ylim(0, 1.2)
+#plt.xlim(4384, 4410)
+plt.xlabel('Wavelength')
+plt.ylabel('Flux')
+plt.tight_layout()
+plt.legend()
 plt.show()
 plt.close()
 
