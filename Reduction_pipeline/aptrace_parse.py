@@ -49,14 +49,10 @@ def get_curve(trace_lines, i_s):
 # -----TESTS------
 # ----------------
 
-apall_file_txt = 'observations/TEST/database/apEC61329'
-fits_file = 'observations/TEST/EC61329.fits'
-
-#apall_file_txt = 'observations/GAIA_RV_STAND/database/apEC60970'
-#fits_file = 'observations/GAIA_RV_STAND/EC60970.fits'
-
-#apall_file_txt = 'observations/NGC6940/database/apEC61259'
-#fits_file = 'observations/NGC6940/EC61259.fits'
+spectrum = ['EC59437','EC59444', 'EC59495'][1]
+survey = 'GREGOR_TEST_2'
+apall_file_txt = 'observations/'+survey+'/database/ap'+spectrum
+fits_file = 'observations/'+survey+'/'+spectrum+'.fits'
 
 txt = open(apall_file_txt, 'r')
 apall_lines = txt.read().split('\n')
@@ -72,7 +68,7 @@ img_vals_interp = f_img(np.arange(img_size[0])+1, np.arange(img_size[1])+1)
 #f_img = RectBivariateSpline(np.arange(img_size[0]), np.arange(img_size[1]), img_vals, kx=3, ky=3)
 print f_img(1264., 1068.)
 
-plt.imshow(img_vals, origin='lower', vmin=10, vmax=np.percentile(img_vals, 90), interpolation='none', extent=(0.5, img_size[0]+0.5,0.5, img_size[0]+0.5))
+plt.imshow(img_vals, origin='lower', vmin=np.percentile(img_vals, 88), vmax=np.percentile(img_vals, 90), interpolation='none', extent=(0.5, img_size[0]+0.5,0.5, img_size[0]+0.5))
 #plt.show()
 #plt.close()
 
@@ -140,15 +136,15 @@ for i_l, line in enumerate(apall_lines):
       # change argmax with some kind of fit
       idx_max = np.argmax(sum_shifts)
       y_shift_best = y_shifts[idx_max]
-      print '  Best Y corr', y_shift_best, sum_shifts[idx_max]
-      plt.plot(x_curve[idx_x], y_curve[idx_x]+y_shift_best, c='red')
+      #print '  Best Y corr', y_shift_best, sum_shifts[idx_max]
+      #plt.plot(x_curve[idx_x], y_curve[idx_x]+y_shift_best, c='red')
     #plt.axvline(y_shift_best, color='C1')
     #plt.plot(y_shifts, sum_shifts)
     #plt.legend()
     #plt.tight_layout()
     #plt.show()
     #plt.close()
-    '''   
+    '''
 
     '''
     sum_shifts = list([])
