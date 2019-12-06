@@ -46,3 +46,7 @@ logfile
 *.bmp
 *_ref
 
+
+*.OLD
+
+*.csv#

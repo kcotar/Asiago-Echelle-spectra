@@ -42,8 +42,8 @@ out_data.write('solatwins-multiples_asiago_avgust18.csv', format='ascii.fixed_wi
 site = 'Mt. Ekar 182 cm. Telescope'
 
 # requested day
-day = 20
-month = 7
+day = 11
+month = 8
 year = 2019
 time_day_start = Time('{:04.0f}-{:02.0f}-{:02.0f} 12:00:00'.format(year, month, day), scale='utc')  # begin the same day
 time_day_end = Time('{:04.0f}-{:02.0f}-{:02.0f} 12:00:00'.format(year, month, day+1), scale='utc')  # end next day

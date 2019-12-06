@@ -10,15 +10,31 @@ from astropy.table import Table, join
 from glob import glob
 from os import chdir, system, path
 
-in_dir = '/shared/ebla/cotar/Asiago_reduced_data/RVS_COMP/'
+asiago_data_dir = '/shared/ebla/cotar/Asiago_reduced_data/'
 
+# # ---- BRIGHT RV STANDARDS ----
+# subfolder_name = 'RVS_COMP'
+# out_dir = 'RV_standards_bright'
+# # -----------------------------
+
+# # ---- GAIA RV STANDARDS ------
+# subfolder_name = 'GAIA_RV_STAND'
+# out_dir = 'RV_standards_Gaia'
+# # -----------------------------
+
+# ---- ACQARIOUS STREAM CANDIDATES
+subfolder_name = 'GREGOR_TEST'
+out_dir = 'AQU_stream_candidates'
+# -----------------------------
+
+in_dir = asiago_data_dir + subfolder_name + '/'
 # read data about reduced spectra
-obs_data = Table.read(in_dir + 'RVS_COMP_reduced.fits')
+obs_data = Table.read(in_dir + subfolder_name + '_reduced.fits')
+
 # order by MJD - from old to new
 obs_data = obs_data[np.argsort(obs_data['MJD'])]
 
-# go to a subfolder
-out_dir = 'RV_standards_bright'
+# go to a output subfolder
 system('mkdir ' + out_dir)
 chdir(out_dir)
 
@@ -64,7 +80,7 @@ for star_name in np.unique(obs_data['obj_name']):
 raise SystemExit
 
 # plot sections of individual spectra and arcs that were used in the analysis
-# also add refenrence spectrum the plot
+# also add reference spectrum the plot
 ref_fits = fits.open(in_dir + 'solar.fits')
 ref_flx_orig = ref_fits[0].data
 ref_wvl_orig = ref_fits[0].header['CRVAL1'] + np.arange(len(ref_flx_orig)) * ref_fits[0].header['CDELT1']

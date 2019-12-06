@@ -9,7 +9,6 @@ from copy import deepcopy
 from time import time
 
 
-
 def get_julia_dates_header(filename):
     file_data = fits.open(filename+'.fits')
     jd = file_data[0].header['JD']
@@ -17,7 +16,6 @@ def get_julia_dates_header(filename):
     # check if those dates are correct in the case when spectra are merged together
     file_data.close()
     return mjd, jd
-
 
 
 def spectra_logspace(flx, wvl):
