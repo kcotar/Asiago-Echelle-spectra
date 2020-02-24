@@ -15,9 +15,9 @@ print(st_data.colnames)
 print('N objects:', len(st_data))
 
 # asiago hard location limit
-st_data = st_data[st_data['dec'] > -40.]
+st_data = st_data[st_data['dec'] > -10.]
 # magnitude limit to get only brighter stars
-st_data = st_data[st_data['phot_g_mean_mag'] < 10.]
+st_data = st_data[st_data['phot_g_mean_mag'] < 11.]
 
 # filter by ra
 st_data = st_data[st_data['ra'] > 0.]
@@ -25,7 +25,7 @@ st_data = st_data[st_data['ra'] < 150.]
 
 out_data = st_data['sobject_id','ra','dec','phot_g_mean_mag']
 out_data = out_data[np.argsort(out_data['ra'])]
-out_data.write('galileo_telescope_targets_1912.txt', format='ascii.fixed_width_two_line', overwrite=True)
+out_data.write('galileo_telescope_targets_1912_2.txt', format='ascii.fixed_width_two_line', overwrite=True)
 
 # assiago coordinate
 site = 'Mt. Ekar 182 cm. Telescope'

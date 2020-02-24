@@ -3,11 +3,13 @@
 import sys
 import os
 from glob import glob
+import pyfits
 import shutil
 import numpy as np
 import matplotlib
 matplotlib.use('Agg')  # removes conflicts with pyraf and tkinter
 import matplotlib.pyplot as plt
+import operator
 import time
 import traceback
 from pyraf import iraf
@@ -42,17 +44,17 @@ surveys = {
 'WAV_REF_GEN':[
 #'TEST':[
 {	
-	'DATE_DIR': '202002',
+	'DATE_DIR': 'RVS_STAND',
 	'ID_field': 'no_id',
 	'biases': [], 
 	'flats': [], 
 	'objects':
 		[
 		{
-			'spectra': ['EC64574'], 
-			'calibs':  ['EC64575'], 
-			'ID': 1,
-			'obj_name': '',
+			'spectra': ['EC53435'], 
+			'calibs':  ['EC53436'], 
+			'ID': 4,
+			'obj_name': 'HR 6056',
 		},
 		],
 	'REF_ARC':None,  
@@ -771,109 +773,6 @@ surveys = {
 	'REF_AP':'', 
 	'ap_position':'center',
         'combine_exp': False
-},
-{   
-	'DATE_DIR':'202001',
-	'ID_field': 'source_id',
-	'biases':['EC64012', 'EC64013', 'EC64014', 'EC64015', 'EC64016'], 
-	'flats':['EC64007', 'EC64008', 'EC64009', 'EC64010', 'EC64011'], 
-	'objects':
-		[
-		{
-			'spectra': ['EC63939'], 
-			'calibs':  ['EC63940'], 
-			'ID': 0,
-			'obj_name': 'HIP100017',
-                        'RV_ref': -4.455
-		},
-                {
-			'spectra': ['EC63985'], 
-			'calibs':  ['EC63986'], 
-			'ID': 0,
-			'obj_name': 'HIP078424',
-                        'RV_ref': -21.748
-		},
-                {
-			'spectra': ['EC63997'], 
-			'calibs':  ['EC63998'], 
-			'ID': 0,
-			'obj_name': 'HIP085268',
-                        'RV_ref': 13.495
-		},
-                {
-			'spectra': ['EC64003'], 
-			'calibs':  ['EC64004'], 
-			'ID': 0,
-			'obj_name': 'HIP085653',
-                        'RV_ref': -83.98
-		},
-                {
-			'spectra': ['EC63999'], 
-			'calibs':  ['EC64000'], 
-			'ID': 0,
-			'obj_name': 'HIP083389',
-                        'RV_ref': -46.883
-		},
-		{
-			'spectra': ['EC63937'], 
-			'calibs':  ['EC63938'], 
-			'ID': 0,
-			'obj_name': 'HIP110341',
-                        'RV_ref': 8.627
-		},
-		],
-	'REF_ARC':None, 
-	'REF_AP':'', 
-	'ap_position':'center',
-        'combine_exp': False
-},
-{   
-	'DATE_DIR':'202002',
-	'ID_field': 'source_id',
-	'biases':['EC64595', 'EC64596', 'EC64597', 'EC64598', 'EC64599'], 
-	'flats':['EC64590', 'EC64591', 'EC64592', 'EC64593', 'EC64594'], 
-	'objects':
-		[
-		{
-			'spectra': ['EC64574'], 
-			'calibs':  ['EC64575'], 
-			'ID': 0,
-			'obj_name': 'HIP100017',
-                        'RV_ref': -4.455
-		},
-                {
-			'spectra': ['EC64572'], 
-			'calibs':  ['EC64573'], 
-			'ID': 0,
-			'obj_name': 'HIP078424',
-                        'RV_ref': -21.748
-		},
-                {
-			'spectra': ['EC64576'], 
-			'calibs':  ['EC64577'], 
-			'ID': 0,
-			'obj_name': 'HIP085268',
-                        'RV_ref': 13.495
-		},
-                {
-			'spectra': ['EC64580'], 
-			'calibs':  ['EC64581'], 
-			'ID': 0,
-			'obj_name': 'HIP085653',
-                        'RV_ref': -83.98
-		},
-                {
-			'spectra': ['EC64578'], 
-			'calibs':  ['EC64579'], 
-			'ID': 0,
-			'obj_name': 'HIP083389',
-                        'RV_ref': -46.883
-		},
-		],
-	'REF_ARC':None, 
-	'REF_AP':'', 
-	'ap_position':'center',
-        'combine_exp': False
 }
 ],
 # -----------------------------------------
@@ -1026,7 +925,6 @@ surveys = {
 },
 ],
 'RVS_COMP':[
-
 {	
 	'DATE_DIR': 'RVS_STAND',
 	'ID_field': 'no_id',
@@ -1035,8 +933,8 @@ surveys = {
 	'objects':
 		[
 		{
-			'spectra': ['EC53824', 'EC54732', 'EC63245', 'EC63247', 'EC63263', 'EC63989', 'EC64586'], 
-			'calibs':  ['EC53825', 'EC54733', 'EC63246', 'EC63248', 'EC63264', 'EC63990', 'EC64587'], 
+			'spectra': ['EC53824', 'EC54732', 'EC63245', 'EC63247', 'EC63263'], 
+			'calibs':  ['EC53825', 'EC54733', 'EC63246', 'EC63248', 'EC63264'], 
 			'ID': 0,
 			'obj_name': 'Alpha Boo',
 		},
@@ -1054,8 +952,8 @@ surveys = {
 	'objects':
 		[
 		{
-			'spectra': ['EC57055', 'EC63255', 'EC63267', 'EC63522', 'EC63524', 'EC63856', 'EC64600'], 
-			'calibs':  ['EC57057', 'EC63256', 'EC63268', 'EC63523', 'EC63525', 'EC63857', 'EC64601'], 
+			'spectra': ['EC57055', 'EC63255', 'EC63267'], 
+			'calibs':  ['EC57057', 'EC63256', 'EC63268'], 
 			'ID': 1,
 			'obj_name': 'Alpha Cas',
 		},
@@ -1073,8 +971,8 @@ surveys = {
 	'objects':
 		[
 		{
-			'spectra': ['EC57289', 'EC63519', 'EC63520', 'EC63945', 'EC64602'],
-			'calibs':  ['EC57288', 'EC63521', 'EC63521', 'EC63946', 'EC64603'],
+			'spectra': ['EC57289'], 
+			'calibs':  ['EC57288'], 
 			'ID': 2,
 			'obj_name': 'Alpha Cet',
 		},
@@ -1092,8 +990,8 @@ surveys = {
 	'objects':
 		[
 		{
-			'spectra': ['EC53438', 'EC53828', 'EC63241', 'EC63261', 'EC64001', 'EC64584'], 
-			'calibs':  ['EC53437', 'EC53830', 'EC63242', 'EC63262', 'EC64002', 'EC64585'], 
+			'spectra': ['EC53438', 'EC53828', 'EC63241', 'EC63261'], 
+			'calibs':  ['EC53437', 'EC53830', 'EC63242', 'EC63262'], 
 			'ID': 3,
 			'obj_name': 'HR 5694',
 		},
@@ -1111,8 +1009,8 @@ surveys = {
 	'objects':
 		[
 		{
-			'spectra': ['EC53435', 'EC63215', 'EC63237', 'EC63239', 'EC64582'], 
-			'calibs':  ['EC53436', 'EC63216', 'EC63238', 'EC63240', 'EC64583'], 
+			'spectra': ['EC53435', 'EC63215', 'EC63237', 'EC63239'], 
+			'calibs':  ['EC53436', 'EC63216', 'EC63238', 'EC63240'], 
 			'ID': 4,
 			'obj_name': 'HR 6056',
 		},
@@ -1123,55 +1021,6 @@ surveys = {
         'combine_exp': False
 },
 ],
-# -----------------------------------------
-# -----------------------------------------
-# ------ Temp reduction settings ----------
-# -----------------------------------------
-# -----------------------------------------
-'TEST_REDUCTIONS':[
-{	
-	'DATE_DIR': 'RVS_STAND',
-	'ID_field': 'no_id',
-	'biases': [], 
-	'flats': [], 
-	'objects':
-		[
-		{
-			'spectra': ['EC63241', 'EC63261'], 
-			'calibs':  ['EC63242', 'EC63262'], 
-			'ID': 3,
-			'obj_name': 'HR 5694',
-		},
-		],
-	'REF_ARC':None,  
-	'REF_AP':'', 
-	'ap_position':'center',
-        'combine_exp': False
-},
-],
-
-'GZ_DRA':[
-{	
-	'DATE_DIR':'201912',
-	'ID_field': 'id',
-	'biases':['EC63564','EC63565','EC63566','EC63567','EC63568','EC63653','EC63654','EC63655','EC63656','EC63657'], 
-	'flats':['EC63569','EC63570','EC63571','EC63572','EC63573'], 
-	'objects':
-		[
-		{
-			'spectra': ['EC63526','EC63560','EC63580','EC63582','EC63642','EC63644','EC63646'], 
-			'calibs':  ['EC63527','EC63561','EC63581','EC63583','EC63643','EC63645','EC63647'], 
-			'ID': 0,
-			'obj_name': 'GZ_Dra',
-		},
-		],
-	'REF_ARC':None,  
-	'REF_AP':'', 
-	'ap_position':'center',
-        'combine_exp': False
-},
-],
-
 }
 
 '''
@@ -1180,22 +1029,20 @@ surveys = {
 
 AP_LIM = {'left': [-20, 10, '-19:-11'], 'center': [-15, 15, '-15:-10,10:15']}
 
-root_dir = '/home/nandir/IRAF_Echelle_Asiago/Reduction_pipeline/'
 root_dir_data = '/home/nandir/gigli2/media/hdd/home2/janez/ftp/asiago_observations/'
-root_dir_arcs = root_dir + 'ref_wav_files_manual/'
-#root_dir_arcs = root_dir + 'ref_wav_files/'
-root_dir_apref = root_dir + 'ref_ap_files/'
-root_dir_rvref = root_dir + 'ref_rv_files/'
-root_dir_out = '/home/nandir/gigli2/shared/ebla/cotar/Asiago_reduced_data/'
+root_dir_arcs = '/home/nandir/IRAF_Echelle_Asiago/Reduction_pipeline/ref_wav_files_manual/'
+#root_dir_arcs = '/home/nandir/IRAF_Echelle_Asiago/Reduction_pipeline/ref_wav_files/'
+root_dir_apref = '/home/nandir/IRAF_Echelle_Asiago/Reduction_pipeline/ref_ap_files/'
+root_dir_rvref = '/home/nandir/IRAF_Echelle_Asiago/Reduction_pipeline/ref_rv_files/'
 
-process_survey = 'GAIA_RV_STAND'
+process_survey = 'RVS_COMP'
 REWRITE = False  # cheks if result is already present and skips processing of that stage accordingly
 REREDUCE = False  # run reduction procedure again?
 REANALYSE = True  # does RV and parameter determination have to be run again if results already exist
 
 
 def main():
-  work_path = root_dir_out + process_survey
+  work_path = 'observations/' + process_survey
     
   if not os.path.exists(work_path): 
     os.makedirs(work_path)
@@ -1207,9 +1054,8 @@ def main():
     os.makedirs(work_path+'/cosmics')
 
   #iraf.cd(work_path)
-  #print('Exporting orders')
   #for i_o_w in range(31):
-  #  export_spectrum_order_to_txt('EC63646_vh_norm', order=i_o_w)
+  #  export_spectrum_order_to_txt('EC59444.ec', order=i_o_w)
   #raise SystemExit
 
   # don't ask, we just need this
@@ -1240,9 +1086,9 @@ def main():
      # preapre data that are needed for reduction of every spectra in selected period
      if len(survey_cur_date['biases']) > 0: 
        mbias = create_masterbias(survey_cur_date, root_dir_cur_date, rewrite=REWRITE)    
-     # if len(survey_cur_date['flats']) > 0:
-     #   mflat = create_masterflat(survey_cur_date, root_dir_cur_date, rewrite=True)    
-     #   mflat_norm = normalize_masterflat(survey_cur_date, rewrite=True)  
+     if len(survey_cur_date['flats']) > 0:
+       mflat = create_masterflat(survey_cur_date, root_dir_cur_date, rewrite=REWRITE)    
+       # mflat_norm = normalize_masterflat(survey_cur_date, rewrite=REWRITE)  
 
      # Process with actual spectra reduction
      # Individually reduce every object observed on this date
@@ -1288,7 +1134,7 @@ def main():
        #rvref_spec_list = [rf.split('/')[-1].split('.')[0] for rf in rvref_spec_list]
        rvref_spec_list = ['solar']
        rv_med, rv_std = get_RV_custom_corr_perorder(final_norm_orders, root_dir_rvref, rvref_spec_list, plot_rv=True, ref_val=rv_ref_val)
-       print('    Final RV values:', rv_med, rv_std)
+       print '    Final RV values:', rv_med, rv_std
        #get_RV(obj_spectra_data, root_dir_rvref, rvref_spec_list, multi_ref=False, multi_sample=False, ref_val=rv_ref_val)
 
        # add results to table
@@ -1301,17 +1147,17 @@ def main():
          mjd, jd = get_julia_dates_header(final_img)
          res_list = [final_img, survey_cur_date['DATE_DIR'], obj_spectra_data['obj_name'], final_norm_arc_1d[i_f], obj_spectra_data['ID'],
                      mjd, jd, rv_med[i_f], rv_std[i_f], 0., 0., 0., 0., 0., 0.]
-         print('    Final results:', res_list)
+         print '    Final results:', res_list
          res_tab.add_row(res_list)
          res_tab.write(res_tab_out_file, overwrite=True)
 
 def create_masterbias(obs_data, root_data, rewrite=True):
-  print("\n + Creating masterbias "+obs_data['DATE_DIR']+"\n")
+  print "\n + Creating masterbias "+obs_data['DATE_DIR']+"\n"
   mb_filename = 'masterbias_'+obs_data['DATE_DIR']+'.fits'
 
   if not rewrite:
     if os.path.isfile(mb_filename):
-      print('  -- Masterbias already created.')
+      print '  -- Masterbias already created.'
       return mb_filename
 
   try: os.remove(mb_filename)
@@ -1322,14 +1168,14 @@ def create_masterbias(obs_data, root_data, rewrite=True):
   return mb_filename
 
 def create_masterflat(obs_data, root_data, rewrite=True):
-  print("\n + Creating masterflat "+obs_data['DATE_DIR']+"\n")
+  print "\n + Creating masterflat "+obs_data['DATE_DIR']+"\n"
 
   mb_filename = 'masterbias_'+obs_data['DATE_DIR']+'.fits'
   mf_filename = 'masterflat_'+obs_data['DATE_DIR']+'.fits'
 
   if not rewrite:
     if os.path.isfile(mb_filename):
-      print('  -- Masterflat already created.')
+      print '  -- Masterflat already created.'
       return mf_filename
 
   try: os.remove(mf_filename)
@@ -1349,14 +1195,14 @@ def create_masterflat(obs_data, root_data, rewrite=True):
   return mf_filename
 
 def normalize_masterflat(obs_data, rewrite=True):
-  print("\n + Normalizing masterflat "+obs_data['DATE_DIR']+"\n")
+  print "\n + Normalizing masterflat "+obs_data['DATE_DIR']+"\n"
 
   mf_filename_orig = 'masterflat_'+obs_data['DATE_DIR']+'.fits'
   mf_filename_norm = 'masterflat_'+obs_data['DATE_DIR']+'_norm.fits'
 
   if not rewrite:
-    if os.path.isfile(mf_filename_norm):
-      print('  -- Normalized masterflat already created.')
+    if os.path.isfile(mb_filename):
+      print '  -- Normalized masterflat already created.'
       return mf_filename_norm
 
   try: os.remove(mf_filename_norm)
@@ -1367,13 +1213,13 @@ def normalize_masterflat(obs_data, rewrite=True):
   return mf_filename_norm
 
 def check_spectra(spec_data, ext):
-  print("\n + Visually check spectra before proceeding\n")
+  print "\n + Visually check spectra before proceeding\n"
 
   for obj in spec_data['spectra']:
     iraf.splot(obj+ext)
 
 def clean_folder_write_header(spec_data, root_data, rewrite=True):
-  print('\n + Cleaning folder, truncating edges, fixing bad pixels\n')
+  print '\n + Cleaning folder, truncating edges, fixing bad pixels\n'
 
   if not rewrite:
     # check if all needed files already exist
@@ -1384,7 +1230,7 @@ def clean_folder_write_header(spec_data, root_data, rewrite=True):
         if not os.path.isfile(chk_file): 
           n_miss += 1
     if n_miss == 0:
-      print('  -- Folder already prepared.')
+      print '  -- Folder already prepared.'
       return False
 
   for obj in spec_data['spectra']:
@@ -1413,17 +1259,17 @@ def clean_folder_write_header(spec_data, root_data, rewrite=True):
   return True
 
 def bias_correct(obs_data, master_bias):
-  print('\n + Correcting images and arcs for bias\n')
+  print '\n + Correcting images and arcs for bias\n'
 
   iraf.ccdproc(images=','.join(obs_data['spectra']+obs_data['calibs']), ccdtype='', fixpix='yes', oversca='no', trim='yes', zerocor='yes', darkcor='no', flatcor='no', zero=master_bias, fixfile='badpix.txt')
 
 def flat_correct(obs_data, master_flat):
-  print('\n + Correcting images and arcs for flat\n')
+  print '\n + Correcting images and arcs for flat\n'
 
   iraf.ccdproc(images=','.join(obs_data['spectra']+obs_data['calibs']), ccdtype='', fixpix='yes', oversca='no', trim='yes', zerocor='no', darkcor='no', flatcor='yes', flat=master_flat, fixfile='badpix.txt')
 
 def do_apall_for_real(obs_data, AP_LIM, ref_ap=None, rewrite=True):
-  print('\n + Doing apall for real\n')
+  print '\n + Doing apall for real\n'
 
   if not rewrite:
     n_miss = 0
@@ -1431,7 +1277,7 @@ def do_apall_for_real(obs_data, AP_LIM, ref_ap=None, rewrite=True):
       if not os.path.isfile('database/ap'+obj):
         n_miss += 1
     if n_miss == 0:
-      print('  -- Appal tracing already performed.')
+      print '  -- Appal tracing already performed.'
       return False
 
   #do apall for real with background and all
@@ -1446,11 +1292,11 @@ def do_apall_for_real(obs_data, AP_LIM, ref_ap=None, rewrite=True):
       ref = ref_ap.split('/')[-1].replace('ap', '')
     else:
       ref = obj
-    print('APALL',obj, ref)
+    print 'APALL',obj, ref
     iraf.apall(input=obj, referen=ref, format='echelle', interac='yes', find='yes', recente='yes', resize='yes', edit='yes', trace='yes', fittrac='yes', extract='no', extras='no', review='no', line=500, nsum=50, lower=-5, upper=5, width=5, radius=9, thresho=0.2, nfind=31, minsep=25, maxsep=255, t_func='chebyshev', t_order=11, t_niter=5, t_low_reject=2.5, t_high_reject=2.5, t_nsum=20, t_step=10, backgro='none', ylevel='INDEF', llimit=-5, ulimit=5, order='increasing')#, apidtable='apert.txt')
 
 def apply_apall(obs_data, AP_LIM, rewrite=True):
-  print('\n + Applying apall to rest of the objects and arcs\n')
+  print '\n + Applying apall to rest of the objects and arcs\n'
 
   if not rewrite:
     n_s = len(obs_data['spectra'])
@@ -1460,11 +1306,11 @@ def apply_apall(obs_data, AP_LIM, rewrite=True):
         if not os.path.isfile(chk_file): 
           n_miss += 1
     if n_miss == 0:
-      print('  -- Appal already applied to all spectra and calib.')
+      print '  -- Appal already applied to all spectra and calib.'
       return False
 
   for obj in obs_data['spectra']:
-    print(' - Processing image %s \n' % obj)
+    print ' - Processing image %s \n' % obj
 
     try: 
       os.remove(obj+'.ec.fits')
@@ -1475,15 +1321,15 @@ def apply_apall(obs_data, AP_LIM, rewrite=True):
       iraf.apall(input=obj, output=obj+j[0], format='echelle', referen=obj, interac='no', find='no', recente='no', resize='no', edit='no', trace='no', fittrac='no', extract='yes', extras='no', review='no', line=600, nsum=30, lower=-5, upper=5, width=8, radius=10, thresho=0.1, nfind=35, minsep=10, maxsep=255, t_func='chebyshev', t_order=9, t_niter=5, backgro=j[1], b_order=1, b_sampl=AP_LIM[2], ylevel='INDEF', llimit=-5, ulimit=5, weights='variance', clean='yes', pfit='fit1d', order='increasing')#, apidtable='apert.txt')  
 
   for i, cal in enumerate(obs_data['calibs']):
-    print(' - Processing arc %s \n' % cal)
+    print ' - Processing arc %s \n' % cal
 
     try: os.remove(cal+'.ec.fits')
     except: pass 
-    print('   input:',cal,'    referen:', obs_data['spectra'][i])
+    print '   input:',cal,'    referen:', obs_data['spectra'][i]
     iraf.apall(input=cal, format='echelle', referen=obs_data['spectra'][i], interac='no', find='no', recente='no', resize='no', edit='no',trace='no', fittrac='no', extract='yes', extras='no', review='no', line=600, nsum=30, lower=-5, upper=5, width=8, radius=10, thresho=0.1, nfind=35, minsep=10, maxsep=255, t_func='chebyshev', t_order=9, t_niter=5, backgro='none', ylevel='INDEF', llimit=-5, ulimit=5, order='increasing', weights='variance', pfit='fit1d')#, apidtable='apert.txt')    
 
 def wavelength_solution_ref_create(obs_data, rewrite=True):
-  print('Creating new reference arc wavelength solution')
+  print 'Creating new reference arc wavelength solution'
   iraf.unlearn('ecidentify')
   iraf.unlearn('ecreidentify')
   for cal in obs_data['calibs']:
@@ -1492,7 +1338,7 @@ def wavelength_solution_ref_create(obs_data, rewrite=True):
 
 
 def wavelength_solution(obs_data, arc_full_path, arc_file, rewrite=True):
-  print('\n + Finding the wavelength solution\n')
+  print '\n + Finding the wavelength solution\n'
 
   # calibrate wavelength
   # This step will require you to calibrate first arc by hand. The rest will be done automatically.
@@ -1505,7 +1351,7 @@ def wavelength_solution(obs_data, arc_full_path, arc_file, rewrite=True):
       if not os.path.isfile('database/ec'+obj+'.ec'):
         n_miss += 1
     if n_miss == 0:
-      print('  -- Wavelength solutions already found.')
+      print '  -- Wavelength solutions already found.'
       return False
 
   if arc_file is not None:
@@ -1517,13 +1363,13 @@ def wavelength_solution(obs_data, arc_full_path, arc_file, rewrite=True):
 
   for cal in obs_data['calibs']:
     iraf.unlearn('ecidentify')
-    print(' Searching for the best arc')
+    print ' Searching for the best arc' 
     arc_rms_all = list([])
     for arc_full_path in arc_full_path_list:
       # print arc_full_path
       if arc_full_path:
         try:
-          # print('shutil.copy')
+          # print 'shutil.copy'
           shutil.copy(arc_full_path, 'database/' + arc_full_path.split('/')[-1])  
         except:
           pass
@@ -1550,16 +1396,16 @@ def wavelength_solution(obs_data, arc_full_path, arc_file, rewrite=True):
     iraf.unlearn('ecreidentify')
     idx_arc = np.nanargmin(arc_rms_all)
     arc_full_use = arc_full_path_list[idx_arc]
-    print(' All arc RMS:', arc_rms_all)
-    print(' Best:', arc_full_use.split('/')[-1], arc_rms_all[idx_arc])
+    print ' All arc RMS:', arc_rms_all
+    print ' Best:', arc_full_use.split('/')[-1], arc_rms_all[idx_arc]
     iraf.ecreident(images=cal+'.ec', referenc=arc_full_use.replace('/ec', '/').split('/')[-1], refit='yes', shift='INDEF', cradius=5, thresho=10)
     
-    print('iraf.ecident')
+    print 'iraf.ecident'
     # lower number of maxfeat for less work while removing bad emissions in arc, incresed minsep
     iraf.ecident(images=cal+'.ec', coordli='linelists$thar.dat', match=0.025, maxfeat=1200, ftype='emission', fwidth=4, cradius=5, thresho=2, minsep=3, functio='chebyshev', xorder=6, yorder=6, niterat=7, lowreje=2.5, highreje=2.5, autowri='yes')
 
 def apply_wav_solution(obs_data, include_cal=False, rewrite=True):
-  print('\n + Applying the wavelength solution\n')
+  print '\n + Applying the wavelength solution\n'
 
   if not rewrite:
     # TODO: proper check for this
@@ -1571,7 +1417,7 @@ def apply_wav_solution(obs_data, include_cal=False, rewrite=True):
   for i, obj in enumerate(obs_data['spectra']):
     cal = obs_data['calibs'][i]+'.ec'
     # export wav calibrated spectra
-    print('Using cal:', cal)
+    print 'Using cal:', cal
     for j in ['.ec', '.ec.nosky']:
       iraf.refspectra(input=obj+j, referen=cal, sort='', group='', confirm='no', Stdout="/dev/null")
       iraf.dispcor(input=obj+j, output=obj+j, lineari='no', verbose='yes')
@@ -1589,7 +1435,7 @@ def apply_wav_solution(obs_data, include_cal=False, rewrite=True):
       #   export_spectrum_order_to_txt(cal+'_wvl', order=i_o_w)
 
 def vhelio_correct(obs_data, rewrite=True):
-  print('\n + VHELIO correction\n')
+  print '\n + VHELIO correction\n'
 
   if not rewrite:
     n_miss = 0
@@ -1598,7 +1444,7 @@ def vhelio_correct(obs_data, rewrite=True):
       if not os.path.isfile(obj+'.vh.fits'):
         n_miss += 1
     if n_miss == 0:
-      print('  -- VHELIO correction already performed.')
+      print '  -- VHELIO correction already performed.'
       return False
     
   for obj in obs_data['spectra']:
@@ -1632,7 +1478,7 @@ def vhelio_correct(obs_data, rewrite=True):
 
 def combine_normalize_arcs(obs_data, normalize=True, rewrite=True):
 
-      print('\n + Normalization of arc spectra\n')
+      print '\n + Normalization of arc spectra\n'
 
       final_norm_files = list([])
       for obj in obs_data['calibs']:
@@ -1644,7 +1490,7 @@ def combine_normalize_arcs(obs_data, normalize=True, rewrite=True):
             if os.path.isfile(chk_file):
               n_done += 1
           if n_done == 5:
-            print('  -- Normalization already applied to arc spectrum.')
+            print '  -- Normalization already applied to arc spectrum.'
             continue
 
         try: 
@@ -1669,7 +1515,7 @@ def combine_normalize_arcs(obs_data, normalize=True, rewrite=True):
 def combine_normalize_images(obs_data, combine=False, normalize=True, rewrite=True):
   
   if combine:
-    print('\n + Combine images\n')
+    print '\n + Combine images\n'
     comb_sum_file = obs_data['spectra'][0]+'_vh_comb'
     comb_sum_norm_file = obs_data['spectra'][0]+'_vh_norm_comb'
     comb_sum_cont_file = obs_data['spectra'][0]+'_cont_comb'
@@ -1686,10 +1532,10 @@ def combine_normalize_images(obs_data, combine=False, normalize=True, rewrite=Tr
       iraf.scombine(input=','.join([obj+'.ec.vh' for obj in obs_data['spectra']]), output=comb_sum_file, group='apertures', combine='sum', reject='none', Stdout="/dev/null")
     else:
       normalize = False
-      print('  -- Normalization already applied to combined spectra.')
+      print '  -- Normalization already applied to combined spectra.'
 
   else:
-    print('\n + Imdividual spectra will not be combined\n')
+    print '\n + Imdividual spectra will not be combined\n'
     # if spectra are not to be combined
     final_norm_files = list([])
     n_miss = 0
@@ -1700,12 +1546,12 @@ def combine_normalize_images(obs_data, combine=False, normalize=True, rewrite=Tr
           n_miss += 1
       if not rewrite and n_miss == 0:
         normalize = False
-        print('  -- Normalization already applied to all individual spectra.')     
+        print '  -- Normalization already applied to all individual spectra.'      
      
   # normalize spectra
   if normalize:
     # This step will require you to manually normalize all the spectra.
-    print('\n + Normalize spectra\n')
+    print '\n + Normalize spectra\n'
 
     if combine:
       try: 
@@ -1721,17 +1567,17 @@ def combine_normalize_images(obs_data, combine=False, normalize=True, rewrite=Tr
           os.remove(obj+'_vh_norm.fits')
         except: 
           pass 
-        iraf.continuum(input=obj+'.ec.vh', output=obj+'_cont', type='fit', replace='no', listonly='no', functio='cheb', order=11, low_rej=2, high_rej=3, naverag=-3, niter=13, interac='yes', markrej='no', ask='yes')
+        iraf.continuum(input=obj+'.ec.vh', output=obj+'_cont', type='fit', replace='no', listonly='no', functio='cheb', order=11, low_rej=2, high_rej=3, naverag=-3, niter=13, interac='no', markrej='no', ask='yes')
         iraf.sarith(input1=obj+'.ec.vh', op='/', input2=obj+'_cont', output=obj+'_vh_norm', format='multispec', Stdout="/dev/null")
 
   #combine apertures
-  print('\n + Combine apertures\n')
+  print '\n + Combine apertures\n'
 
   if combine:
     try: 
         data_1d_file = obs_data['spectra'][0]+'_data1D_comb'
         cont_1d_file = obs_data['spectra'][0]+'_cont1D_comb'
-        final_1d_file = obs_data['spectra'][0]+'_1D_vh_comb_norm'
+	final_1d_file = obs_data['spectra'][0]+'_1D_vh_comb_norm'
         os.remove(data_1d_file+'.fits')       
         os.remove(cont_1d_file+'.fits')    
         os.remove(final_1d_file+'.0001.fits')
@@ -1768,7 +1614,7 @@ def export_observation_to_txt(obs_data, suffix='_vh_norm', export_cal=False):
   else:
     objects = obs_data['spectra']
   for obj in objects:
-    print(' Exporting file:', obj+suffix)
+    print ' Exporting file:', obj+suffix
     for order in np.arange(1, 31, 1):
       try:
         iraf.wspectext(input=obj+suffix+'.fits[*,'+str(order)+',1]', output=obj+suffix+'_order{:02.0f}.txt'.format(order), header='no')
@@ -1778,13 +1624,7 @@ def export_observation_to_txt(obs_data, suffix='_vh_norm', export_cal=False):
 def export_spectrum_order_to_txt(exp_file, order=1):
     try:
       out_txt_file = exp_file+'_order{:02.0f}.txt'.format(order)
-      # out_txt_file = exp_file.split('_')[0]+'.ec.vh_{:d}_normalised.txt'.format(order)  # used for Gregors' RV data
       iraf.wspectext(input=exp_file+'.fits[*,'+str(order)+',1]', output=out_txt_file, header='no')
-      # f_data = np.loadtxt(out_txt_file)
-      # n = f_data.shape[0]
-      # f_mi = int(n/4.)
-      # f_ma = int(n/4.*3)
-      # np.savetxt(out_txt_file, f_data[f_mi:f_ma, :], delimiter="")
       return out_txt_file
     except:
       return None
@@ -1844,7 +1684,7 @@ def get_RV(obs_data, rvref_dir, rv_ref_list, multi_ref=False, multi_sample=False
                 vrel = np.nan
                 verr = np.nan
 
-              print(order, vrel, verr)              
+              print order, vrel, verr              
               txt_file.write("%s %s %s\n" % (order, vrel, verr))
           
               rvs.append(float(vrel))
@@ -1867,9 +1707,9 @@ def get_RV(obs_data, rvref_dir, rv_ref_list, multi_ref=False, multi_sample=False
       plt.savefig(obj+'_'+rv_ref+'_rv_fxcor.png', dpi=250)
       plt.close()
         
-      print('%s: RV median: %s, RV mean: %s, RV sigma: %s' % (obj, np.nanmedian(rvs), np.nanmean(rvs), np.nanstd(rvs)))
-      print('RV fit time: '+str((time.time()-ts)/60.)+' min')
-      print('')
+      print '%s: RV median: %s, RV mean: %s, RV sigma: %s' % (obj, np.nanmedian(rvs), np.nanmean(rvs), np.nanstd(rvs))
+      print 'RV fit time: '+str((time.time()-ts)/60.)+' min'
+      print ''
 
 def get_RV_custom_corr_perorder(obs_spectra, rvref_dir, rvref_list, plot_rv=False, n_min_ord=1, n_max_ord=31, ref_val=np.nan):
 
@@ -1883,14 +1723,14 @@ def get_RV_custom_corr_perorder(obs_spectra, rvref_dir, rvref_list, plot_rv=Fals
     for use_revref in rvref_list:
       ref_flx, ref_wvl = get_RV_ref_spectrum(rvref_dir+use_revref+'.fits')
 
-      print('\n + Determinig RV for input per order spectrum', obs_spectrum, 'and reference', use_revref, '\n')    
+      print '\n + Determinig RV for input per order spectrum', obs_spectrum, 'and reference', use_revref, '\n'    
       rv_shifts = list([])
       with open(obs_spectrum+'_'+use_revref+'_rv.txt', 'w+') as txt_file:
         for i_order in range(n_min_ord, n_max_ord+1):
           order_txt_file = export_spectrum_order_to_txt(obs_spectrum, order=i_order)
-          # print('  ', 'Working on:', order_txt_file)
+          # print order_txt_file
           if order_txt_file is not None:
-            rv_order_val, cent_wvl = correlate_order(order_txt_file, ref_flx, ref_wvl, plot=True)
+            rv_order_val, cent_wvl = correlate_order(order_txt_file, ref_flx, ref_wvl, plot=False)
           else:
             rv_order_val, cent_wvl = np.nan, np.nan
           rv_shifts.append(rv_order_val)
@@ -1914,7 +1754,7 @@ def get_RV_custom_corr_perorder(obs_spectra, rvref_dir, rvref_list, plot_rv=Fals
         rv_std = np.nan
       rv_obs_mean.append(rv_median)
       rv_obs_std.append(rv_std)
-      print(rv_median, rv_std, n_fin_rv)
+      print rv_median, rv_std, n_fin_rv
 
       if plot_rv and np.isfinite(rv_median):
         rv_x = n_min_ord+np.arange(len(rv_shifts))
@@ -1949,7 +1789,7 @@ def print_exception():
   exc_type, exc_value, exc_traceback = e
   a, j = (traceback.extract_tb(exc_traceback, 1))[0][0:2]
   k = (traceback.format_exception_only(exc_type, exc_value))[0]
-  print(a, j, k)
+  print a, j, k
 
 if __name__ == "__main__":
   main()

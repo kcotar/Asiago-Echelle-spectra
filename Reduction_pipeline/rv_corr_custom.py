@@ -9,6 +9,7 @@ from copy import deepcopy
 from time import time
 
 
+
 def get_julia_dates_header(filename):
     file_data = fits.open(filename+'.fits')
     jd = file_data[0].header['JD']
@@ -16,6 +17,7 @@ def get_julia_dates_header(filename):
     # check if those dates are correct in the case when spectra are merged together
     file_data.close()
     return mjd, jd
+
 
 
 def spectra_logspace(flx, wvl):
@@ -37,13 +39,13 @@ def correlate_spectra(obs_flx, obs_wvl, ref_flx, ref_wvl, plot=None):
     wvl_step = ref_wvl[1] - ref_wvl[0]
 
     # correlate the two spectra
-    min_flux = 0.95
+    min_flux = 1.1
     ref_flux_sub_log[ref_flux_sub_log > min_flux] = 1.
     obs_flux_res_log[obs_flux_res_log > min_flux] = 1.
     corr_res = correlate(1.-ref_flux_sub_log, 1.-obs_flux_res_log, mode='same', method='fft')
 
     # create a correlation subset that will actually be analysed
-    corr_w_size_wide = 130  # preform rough search of the local peak
+    corr_w_size_wide = 135  # preform rough search of the local peak
     corr_w_size = 35  # narow down to the exact location of the CC peak 
     corr_c_off = np.int64(len(corr_res) / 2.)
     corr_c_off += np.nanargmax(corr_res[corr_c_off - corr_w_size_wide : corr_c_off + corr_w_size_wide]) - corr_w_size_wide
@@ -94,8 +96,8 @@ def correlate_spectra(obs_flx, obs_wvl, ref_flx, ref_wvl, plot=None):
         plt.savefig(plot+'_2.png', dpi=200)
         plt.close()
 
-    if log_shift_wvl < 2.:
-        # return np.nanmedian(rv_shifts_max)
+    if log_shift_wvl < 5.:
+        # return np.nanmedian(rv_shifts_max), np.nanmedian(ref_wvl)
         return np.nanmedian(rv_shifts), np.nanmedian(ref_wvl)
     else:
         # something went wrong
@@ -108,7 +110,7 @@ def correlate_order(order_txt_file, ref_flx, ref_wvl, plot=False):
     obs_data = np.loadtxt(order_txt_file)
     # print obs_data
   except:
-    # print '  ', 'File not found',order_txt_file
+    print('  ', 'File not found:', order_txt_file)
     return np.nan, np.nan
   obs_flx = obs_data[:, 1]
   obs_wvl = obs_data[:, 0]

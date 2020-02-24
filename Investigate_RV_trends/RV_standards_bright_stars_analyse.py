@@ -13,8 +13,8 @@ from os import chdir, system, path
 asiago_data_dir = '/shared/ebla/cotar/Asiago_reduced_data/'
 
 # # ---- BRIGHT RV STANDARDS ----
-# subfolder_name = 'RVS_COMP'
-# out_dir = 'RV_standards_bright'
+subfolder_name = 'RVS_COMP'
+out_dir = 'RV_standards_bright'
 # # -----------------------------
 
 # # ---- GAIA RV STANDARDS ------
@@ -23,8 +23,8 @@ asiago_data_dir = '/shared/ebla/cotar/Asiago_reduced_data/'
 # # -----------------------------
 
 # ---- ACQARIOUS STREAM CANDIDATES
-subfolder_name = 'GREGOR_TEST'
-out_dir = 'AQU_stream_candidates'
+# subfolder_name = 'GREGOR_TEST'
+# out_dir = 'AQU_stream_candidates'
 # -----------------------------
 
 in_dir = asiago_data_dir + subfolder_name + '/'
@@ -44,7 +44,7 @@ c_value = const.c.to(un.km/un.s).value
 for star_name in np.unique(obs_data['obj_name']):
     star_data = obs_data[obs_data['obj_name'] == star_name]
     star_name_use = star_name.replace(' ', '_')
-    print 'Plotting RVs of', star_name
+    print('Plotting RVs of', star_name)
 
     rvs_all = list()
     for ic, spectrum in enumerate(star_data):
@@ -57,9 +57,9 @@ for star_name in np.unique(obs_data['obj_name']):
         # print info about spectrum
         s_f_h = spectrum_fits[0].header
         if 'TEMP-EC' in s_f_h:
-            print spectrum['Asiago_id'].split('_')[0], '  ', s_f_h['DATE-OBS'][:-5], '  ', s_f_h['ALTITUDE'], '  ', s_f_h['AZIMUTH'], '  ', s_f_h['TEMP-EC'], '  ', s_f_h['HUM-INT']
+            print(spectrum['Asiago_id'].split('_')[0], '  ', s_f_h['DATE-OBS'][:-5], '  ', s_f_h['ALTITUDE'], '  ', s_f_h['AZIMUTH'], '  ', s_f_h['TEMP-EC'], '  ', s_f_h['HUM-INT'])
         else:
-            print spectrum['Asiago_id'].split('_')[0], '  ', s_f_h['DATE-OBS'][:-5], '  ', s_f_h['ALTITUDE'], '  ', s_f_h['AZIMUTH']
+            print(spectrum['Asiago_id'].split('_')[0], '  ', s_f_h['DATE-OBS'][:-5], '  ', s_f_h['ALTITUDE'], '  ', s_f_h['AZIMUTH'])
 
         rvs_all.append(rvs_data[:, 1])
         plt.scatter(rvs_data[:, 0], rvs_data[:, 1], c='C'+str(ic), alpha=0.6, s=20, label=obs_date)
@@ -69,13 +69,16 @@ for star_name in np.unique(obs_data['obj_name']):
     plt.ylabel('Radial velocity per order [km/s]')
     rvs_median = np.nanmedian(rvs_all)
     plt.ylim(rvs_median - 6., rvs_median + 6.)
-    plt.grid(ls='--', c='black', alpha=0.2)
+    plt.xlim(0, 31)
+    plt.grid(ls='--', c='black', alpha=0.3)
+    plt.axvspan(-1, 5, alpha=0.3, color='black')
+    plt.axvspan(25, 33, alpha=0.3, color='black')
     plt.tight_layout()
     plt.legend(loc=2)
-    plt.savefig(star_name_use + '_rvs.png', dpi=300)
+    plt.savefig(star_name_use + '_rvs_202001.png', dpi=300)
     plt.close()
 
-    print ' '
+    print(' ')
 
 raise SystemExit
 
@@ -89,7 +92,7 @@ ref_fits.close()
 for star_name in np.unique(obs_data['obj_name']):
     star_data = obs_data[obs_data['obj_name'] == star_name]
     star_name_use = star_name.replace(' ', '_')
-    print 'Plotting spectra of', star_name
+    print('Plotting spectra of', star_name)
 
     # plot individual sections of spectra
     wvl_d = 30.

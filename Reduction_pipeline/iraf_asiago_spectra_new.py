@@ -177,7 +177,7 @@ def main():
     # maybe useful, maybe not, not sure
     iraf.prcacheOff() 
     
-    """
+    
     # main steps, should work individually
     #check_spectra(workdir, '.ec.vh') 
     create_masterbias(workdir)    
@@ -197,12 +197,10 @@ def main():
     vhelio_correct(workdir)   
     #check_spectra(workdir, '.ec.vh') 
     combine_normalize_images(workdir, combine=False)
-    """
+    get_RV(workdir, multi_ref=False, multi_sample=False)
 
-    #get_RV(workdir, multi_ref=False, multi_sample=False)
-    apply_wav_solution(workdir, include_cal=True)
-    export_spectrum_to_txt(workdir, suffix='.ec_wvl', export_cal=True)
-    export_spectrum_to_txt(workdir, suffix='_vh_norm')
+    # export_spectrum_to_txt(workdir, suffix='.ec_wvl', export_cal=True)
+    # export_spectrum_to_txt(workdir, suffix='_vh_norm')
 
     #check_spectra(workdir) 
     #new_flatfield_lens_problems(workdir)
