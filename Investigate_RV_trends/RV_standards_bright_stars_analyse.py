@@ -9,17 +9,18 @@ from astropy.io import fits
 from astropy.table import Table, join
 from glob import glob
 from os import chdir, system, path
+from zipfile import ZipFile
 
 asiago_data_dir = '/shared/ebla/cotar/Asiago_reduced_data/'
 
 # # ---- BRIGHT RV STANDARDS ----
-subfolder_name = 'RVS_COMP'
-out_dir = 'RV_standards_bright'
+# subfolder_name = 'RVS_COMP'
+# out_dir = 'RV_standards_bright'
 # # -----------------------------
 
-# # ---- GAIA RV STANDARDS ------
-# subfolder_name = 'GAIA_RV_STAND'
-# out_dir = 'RV_standards_Gaia'
+# ---- GAIA RV STANDARDS ------
+subfolder_name = 'GAIA_RV_STAND'
+out_dir = 'RV_standards_Gaia'
 # # -----------------------------
 
 # ---- ACQARIOUS STREAM CANDIDATES
@@ -47,12 +48,17 @@ for star_name in np.unique(obs_data['obj_name']):
     print('Plotting RVs of', star_name)
 
     rvs_all = list()
+    zipObj = ZipFile(star_name_use + '.zip', 'w')
+
     for ic, spectrum in enumerate(star_data):
         rvs_txt = in_dir + spectrum['Asiago_id'] + '_solar_rv.txt'
         rvs_data = np.genfromtxt(rvs_txt, delimiter=',')
         spectrum_fits = fits.open(in_dir + spectrum['Asiago_id'] + '.fits')
         obs_date = spectrum_fits[0].header['DATE-OBS'].split('T')[0]
         spectrum_fits.close()
+
+        spectrum_fits_1D = spectrum['Asiago_id'].split('_')[0] + '_1D_vh_norm.0001.fits'
+        zipObj.write(in_dir + spectrum_fits_1D, spectrum_fits_1D)
 
         # print info about spectrum
         s_f_h = spectrum_fits[0].header
@@ -75,9 +81,10 @@ for star_name in np.unique(obs_data['obj_name']):
     plt.axvspan(25, 33, alpha=0.3, color='black')
     plt.tight_layout()
     plt.legend(loc=2)
-    plt.savefig(star_name_use + '_rvs_202001.png', dpi=300)
+    plt.savefig(star_name_use + '_rvs_202002.png', dpi=300)
     plt.close()
 
+    zipObj.close()
     print(' ')
 
 raise SystemExit

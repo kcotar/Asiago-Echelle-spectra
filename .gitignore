@@ -50,3 +50,7 @@ logfile
 *.OLD
 
 *.csv#
+
+*.save
+
+*.zip
